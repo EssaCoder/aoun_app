@@ -13,7 +13,7 @@ class ThemeApp {
       primaryColor: const Color(0xFF329F95),
       hintColor: const Color(0xFFEAEAEA),
       backgroundColor: const Color(0xFFFFFFFF),
-      scaffoldBackgroundColor: const Color(0xFFFFFFFF),
+      scaffoldBackgroundColor: const Color(0xFF329F95),
       iconTheme: const IconThemeData(color: Color(0xFFFFFFFF), size: 25),
       dividerColor: const Color(0xFFEAEAEA),
       indicatorColor: const Color(0xFFEAEAEA),
@@ -43,7 +43,7 @@ class ThemeApp {
       ),
       colorScheme: const ColorScheme(
           brightness: Brightness.light,
-          primary: Color(0xFF408B6A),
+          primary: Color(0xFF9BEADD),
           onPrimary: Color(0xFFFFFFFF),
           secondary: Color(0x4B53A57C),
           onSecondary: Color(0xFFFFFFFF),
@@ -60,18 +60,18 @@ class ThemeApp {
               color: Color(0xFFFFFFFF)),
           headline2: TextStyle(
               fontWeight: FontWeight.bold,
-              fontSize: 16,
+              fontSize: 20,
               color: Color(0xFFFFFFFF)),
           headline3: TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 14,
               color: Color(0xFF4AB3A9)),
-          headline4: TextStyle(fontSize: 11, color: Color(0xFF494949)),
+          headline4: TextStyle(fontSize: 14, color: Color(0xFF000000)),
           headline5: TextStyle(fontSize: 14, color: Color(0xFF408B6A)),
           bodyText1: TextStyle(
               fontWeight: FontWeight.w400,
-              fontSize: 14,
-              color: Color(0xFFFFFFFF)),
+              fontSize: 16,
+              color: Color(0xFF000000)),
           headlineLarge: TextStyle(
               fontWeight: FontWeight.w400,
               fontSize: 14,

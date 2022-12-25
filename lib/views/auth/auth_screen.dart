@@ -14,6 +14,7 @@ class AuthScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
+          backgroundColor: Theme.of(context).colorScheme.onPrimary,
           body: Column(
             children: [
               Expanded(

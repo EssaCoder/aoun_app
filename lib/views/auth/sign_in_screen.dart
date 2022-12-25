@@ -40,6 +40,7 @@ class _SignInScreenState extends State<SignInScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
+          backgroundColor: Theme.of(context).colorScheme.onPrimary,
       body: Column(
         children: [
           SharedComponents.appBar(title: "Sign in"),
@@ -69,20 +70,25 @@ class _SignInScreenState extends State<SignInScreen> {
                 Align(
                   alignment: AlignmentDirectional.centerStart,
                   child: TextButton(
-                    onPressed: () { },
+                    onPressed: () {},
                     child: Text("Forget password?",
                         style: Theme.of(context).textTheme.headline3),
                   ),
                 ),
                 const SizedBox(height: SharedValues.padding),
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: SharedValues.padding  ),
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: SharedValues.padding),
                   child: ButtonWidget(
                     minWidth: double.infinity,
                     onPressed: () async {
-                      if (_formKey.currentState!.validate()) {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const HomeScreen(),
+                          ));
 
-                      }
+                      // if (_formKey.currentState!.validate()) {}
                     },
                     child: Text(
                       "Sign in",
@@ -98,10 +104,10 @@ class _SignInScreenState extends State<SignInScreen> {
                           style: Theme.of(context).textTheme.bodyText2),
                       TextButton(
                         onPressed: () {
-                          Navigator.push(
-                              context,
+                          Navigator.of(context).pushAndRemoveUntil(
                               MaterialPageRoute(
-                                  builder: (context) => const SignUpScreen()));
+                                  builder: (context) => const SignUpScreen()),
+                              (Route<dynamic> route) => false);
                         },
                         child: Text("Sign up?",
                             style: Theme.of(context).textTheme.headline3),

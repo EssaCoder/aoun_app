@@ -51,7 +51,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
-      body: Column(
+          backgroundColor: Theme.of(context).colorScheme.onPrimary,
+          body: Column(
         children: [
           SharedComponents.appBar(title: "Sign up"),
           Expanded(
@@ -151,7 +152,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   padding: const EdgeInsets.all(SharedValues.padding),
                   child: ButtonWidget(
                     minWidth: double.infinity,
-                    onPressed: () async {},
+                    onPressed: () async {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const HomeScreen(),
+                          ));
+
+                    },
                     child: Text(
                       "Sign up",
                       style: Theme.of(context).textTheme.button,
@@ -166,10 +174,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           style: Theme.of(context).textTheme.bodyText2),
                       TextButton(
                         onPressed: () async {
-                          Navigator.push(
-                              context,
+                          Navigator.of(context).pushAndRemoveUntil(
                               MaterialPageRoute(
-                                  builder: (context) => const SignInScreen()));
+                                  builder: (context) => const SignInScreen()),
+                                  (Route<dynamic> route) => false);
                         },
                         child: Text("Sign in?",
                             style: Theme.of(context).textTheme.headline3),
