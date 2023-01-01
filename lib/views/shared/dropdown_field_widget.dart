@@ -53,7 +53,7 @@ class DropdownFieldWidget extends StatelessWidget {
                         style: Theme.of(context).textTheme.subtitle1,
                       ))
               ],
-              icon:  Icon(Icons.keyboard_arrow_down_rounded,color: Theme.of(context).primaryColor),
+              icon:  const SizedBox.shrink(),
               decoration: InputDecoration(
                   prefixIcon: prefixIcon,
                   suffixIcon: suffixIcon,

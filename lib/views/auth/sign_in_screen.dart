@@ -4,7 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import '/data/network/data_response.dart';
 import '/views/auth/sign_up_screen.dart';
-import '/views/home/home_screen.dart';
+import '/views/home/main_screen.dart';
 import '/views/shared/button_widget.dart';
 import '/views/shared/shared_components.dart';
 import '/views/shared/shared_values.dart';
@@ -18,20 +18,20 @@ class SignInScreen extends StatefulWidget {
 }
 
 class _SignInScreenState extends State<SignInScreen> {
-  late TextEditingController studentNumber;
+  late TextEditingController userID;
   late TextEditingController password;
   final _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
-    studentNumber = TextEditingController();
+    userID = TextEditingController();
     password = TextEditingController();
     super.initState();
   }
 
   @override
   void dispose() {
-    studentNumber.dispose();
+    userID.dispose();
     password.dispose();
     super.dispose();
   }
@@ -58,9 +58,9 @@ class _SignInScreenState extends State<SignInScreen> {
                 Padding(
                   padding: const EdgeInsets.all(SharedValues.padding),
                   child: TextFieldWidget(
-                      controller: studentNumber,
+                      controller: userID,
                       keyboardType: TextInputType.number,
-                      hintText: "Id Number"),
+                      hintText: "User Id"),
                 ),
                 Padding(
                   padding: const EdgeInsets.all(SharedValues.padding),
@@ -85,7 +85,7 @@ class _SignInScreenState extends State<SignInScreen> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => const HomeScreen(),
+                            builder: (context) => const MainScreen(),
                           ));
 
                       // if (_formKey.currentState!.validate()) {}

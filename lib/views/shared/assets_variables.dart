@@ -13,4 +13,6 @@ class AssetsVariable {
   static const String barcodeRead="assets/icons/barcode-read.svg";
   static const String listCheck="assets/icons/list-check.svg";
   static const String home="assets/icons/home.svg";
+  static const String addDocument="assets/icons/add-document.svg";
+  static const String filterList="assets/icons/filter-list.svg";
 }
