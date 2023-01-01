@@ -44,9 +44,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 "Bara Ali Ahmed",
                 style: Theme.of(context).textTheme.headline3,
               ),
-              IconButton(onPressed: () {
-                
-              }, icon: Icon(Icons.edit))
+              IconButton(onPressed: () {}, icon: const Icon(Icons.edit))
             ],
           ),
         ),
@@ -57,6 +55,49 @@ class _ProfilePageState extends State<ProfilePage> {
               color: Theme.of(context).colorScheme.error,
               indent: MediaQuery.of(context).size.width * 0.25,
               endIndent: MediaQuery.of(context).size.width * 0.25),
+        ),
+        for (var i = 0; i < 2; ++i)
+        Container(
+          height: 90,
+          padding: const EdgeInsets.all(SharedValues.padding),
+          margin: const EdgeInsets.all(SharedValues.padding),
+          decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.5),
+              borderRadius: BorderRadius.circular(SharedValues.borderRadius)),
+          child:
+              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            Expanded(
+              child: Align(
+                alignment: AlignmentDirectional.centerStart,
+                child: Text(
+                  "Full Name",
+                  style: Theme.of(context).textTheme.button,
+                ),
+              ),
+            ),
+            Expanded(
+              child: Align(
+                alignment: AlignmentDirectional.centerStart,
+                child: Padding(
+                  padding: const EdgeInsets.all(SharedValues.padding),
+                  child: Text(
+                    "Bara Ali Ahmed",
+                    style: Theme.of(context)
+                        .textTheme
+                        .button
+                        ?.copyWith(fontSize: 12),
+                  ),
+                ),
+              ),
+            ),
+            Container(
+              height: 1,
+              width: double.infinity,
+              margin:
+                  const EdgeInsets.symmetric(horizontal: SharedValues.padding),
+              color: Theme.of(context).colorScheme.onPrimary,
+            )
+          ]),
         )
       ],
     );

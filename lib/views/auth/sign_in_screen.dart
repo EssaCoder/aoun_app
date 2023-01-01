@@ -110,7 +110,7 @@ class _SignInScreenState extends State<SignInScreen> {
                               (Route<dynamic> route) => false);
                         },
                         child: Text("Sign up?",
-                            style: Theme.of(context).textTheme.headline3),
+                            style: Theme.of(context).textTheme.headline5),
                       )
                     ],
                   ),

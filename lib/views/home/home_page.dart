@@ -1,12 +1,15 @@
+import 'package:aoun/views/auth/users_screen.dart';
+import 'package:aoun/views/pilgrims/add_pilgrims.dart';
+import 'package:aoun/views/pilgrims/view_pilgrims.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import '/views/shared/assets_variables.dart';
-import '/views/shared/button_widget.dart';
 import '/views/shared/shared_values.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+  const HomePage({Key? key, this.controller}) : super(key: key);
+final  PageController? controller;
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -90,51 +93,79 @@ class _HomePageState extends State<HomePage> {
               scrollDirection: Axis.horizontal,
               padding: const EdgeInsetsDirectional.only(start: 100),
               children: [
-                for (var i = 0; i < 5; ++i)
-                  Container(
-                    width: 100,
-                    height: double.infinity,
-                    margin: const EdgeInsets.all(SharedValues.padding),
-                    decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.onPrimary,
-                        borderRadius: BorderRadius.circular(
-                            SharedValues.borderRadius)),
-                    child: Column(
-                      children: [
-                        Expanded(
-                            child: Center(
-                              child: RotatedBox(
-                                  quarterTurns: -1,
-                                  child: Text(
-                                    "Create QR Code",
-                                    style:
-                                    Theme.of(context).textTheme.bodyText1,
-                                  )),
-                            )),
-                        Padding(
-                          padding:
-                          const EdgeInsets.all(SharedValues.padding),
-                          child: Container(
-                            height: 2,
-                            decoration: BoxDecoration(
-                                color: Theme.of(context).primaryColor,
-                                borderRadius: BorderRadius.circular(
-                                    SharedValues.borderRadius)),
-                          ),
-                        ),
-                        Padding(
-                          padding:
-                          const EdgeInsets.all(SharedValues.padding),
-                          child: SvgPicture.asset(AssetsVariable.barcodeAdd,
-                              width: 20, height: 20),
-                        ),
-                        const SizedBox(height: SharedValues.padding)
-                      ],
-                    ),
-                  ),
+                  _buildHomeButton("Create QR Code",AssetsVariable.barcodeAdd,() {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => AddPilgrims()));
+                  }),
+                  _buildHomeButton("Read QR Code",AssetsVariable.barcodeRead,() {
+                    // Navigator.push(context, MaterialPageRoute(builder: (context) => AddPilgrims()));
+                  }),
+                  _buildHomeButton("View Pilgrims",AssetsVariable.listCheck,() {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => ViewPilgrims()));
+                  }),
+                  _buildHomeButton("Show Users",AssetsVariable.user,() {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => UsersScreen()));
+
+                  }),
+                  _buildHomeButton("Show Profile",AssetsVariable.user,() {
+                    widget.controller?.animateToPage(2, duration: const Duration(milliseconds: 20), curve: Curves.decelerate);
+                  }),
               ],
             ))
       ],
     );
   }
+
+  Widget _buildHomeButton(String title,String icon,GestureTapCallback? onTap) {
+    return Builder(
+      builder: (context) {
+        return InkWell(
+          borderRadius:BorderRadius.circular(
+              SharedValues.borderRadius) ,
+          onTap: onTap,
+          child: Container(
+                        width: 100,
+                        height: double.infinity,
+                        margin: const EdgeInsets.all(SharedValues.padding),
+                        decoration: BoxDecoration(
+                            color: Theme.of(context).colorScheme.onPrimary,
+                            borderRadius: BorderRadius.circular(
+                                SharedValues.borderRadius)),
+                        child: Column(
+                          children: [
+                            Expanded(
+                                child: Center(
+                                  child: RotatedBox(
+                                      quarterTurns: -1,
+                                      child: Text(
+                                        title,
+                                        style:
+                                        Theme.of(context).textTheme.bodyText1,
+                                      )),
+                                )),
+                            Padding(
+                              padding:
+                              const EdgeInsets.all(SharedValues.padding),
+                              child: Container(
+                                height: 2,
+                                decoration: BoxDecoration(
+                                    color: Theme.of(context).primaryColor,
+                                    borderRadius: BorderRadius.circular(
+                                        SharedValues.borderRadius)),
+                              ),
+                            ),
+                            Padding(
+                              padding:
+                              const EdgeInsets.all(SharedValues.padding),
+                              child: SvgPicture.asset(icon,
+                                  width: 20, height: 20),
+                            ),
+                            const SizedBox(height: SharedValues.padding)
+                          ],
+                        ),
+                      ),
+        );
+      }
+    );
+  }
 }
+

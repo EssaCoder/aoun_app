@@ -44,7 +44,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeApp.light,
         // home: const TestScreen(),
         // home:  const AuthScreen(),
-        home: const MainScreen(),
+        home: const AuthScreen(),
       ),
     );
   }

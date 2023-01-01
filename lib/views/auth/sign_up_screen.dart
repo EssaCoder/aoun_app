@@ -208,7 +208,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                     (Route<dynamic> route) => false);
                           },
                           child: Text("Sign in?",
-                              style: Theme.of(context).textTheme.headline3),
+                              style: Theme.of(context).textTheme.headline5),
                         )
                       ],
                     ),
