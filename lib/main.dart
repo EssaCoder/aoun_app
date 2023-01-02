@@ -1,9 +1,4 @@
 import 'package:aoun/views/home/main_screen.dart';
-import 'package:aoun/views/home/profile_page.dart';
-import 'package:aoun/views/auth/users_screen.dart';
-import 'package:aoun/views/pilgrims/add_pilgrims.dart';
-import 'package:aoun/views/pilgrims/pilgrim_details.dart';
-import 'package:aoun/views/pilgrims/view_pilgrims.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import '/style/theme_app.dart';
@@ -44,7 +39,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeApp.light,
         // home: const TestScreen(),
         // home:  const AuthScreen(),
-        home: const AuthScreen(),
+        home: const MainScreen(),
       ),
     );
   }
