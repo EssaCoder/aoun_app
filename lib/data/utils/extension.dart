@@ -11,6 +11,10 @@ extension IterableExtension<T> on Iterable<T> {
     if (isEmpty) return null;
     return last;
   }
+  T? get firstOrNull {
+    if (isEmpty) return null;
+    return first;
+  }
   Iterable<T> distinctBy(Object Function(T e) getCompareValue) {
     var result = <T>[];
     forEach((element) {

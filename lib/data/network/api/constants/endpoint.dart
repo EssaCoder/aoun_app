@@ -4,5 +4,6 @@ class Endpoints {
   static Endpoints get instance => _instance;
 
   static const int connectionTimeout = 300;
+  static const users = 'users';
 
 }

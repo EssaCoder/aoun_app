@@ -43,3 +43,7 @@ class ConnectionException extends HttpException {
   ConnectionException([message])
       : super(message: message, prefix: "kTimeOutException");
 }
+class ExistUserException extends HttpException {
+  ExistUserException([message])
+      : super(message: message, prefix: "existUserException");
+}

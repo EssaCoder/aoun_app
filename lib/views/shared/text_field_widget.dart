@@ -42,6 +42,7 @@ class TextFieldWidget extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        if(hintText!=null)
         Text("$hintText",style: Theme.of(context).textTheme.labelMedium),
         const SizedBox(height: SharedValues.padding),
         TextFormField(

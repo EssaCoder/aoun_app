@@ -158,4 +158,26 @@ class SharedComponents {
   //     ),
   //   );
   // }
+
+
+  static showSnackBar(context, String text, {Color? backgroundColor}) {
+    return WidgetsBinding.instance.addPostFrameCallback((_) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Flexible(
+              child: Text(
+                text,
+                style: Theme.of(context).textTheme.bodyText1,
+              ),
+            ),
+          ],
+        ),
+        backgroundColor: backgroundColor ?? Theme.of(context).primaryColor,
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+      ));
+    });
+  }
 }

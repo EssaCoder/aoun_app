@@ -1,15 +1,20 @@
-import 'package:aoun/views/home/main_screen.dart';
+import 'package:aoun/data/providers/auth_provider.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import '/style/theme_app.dart';
 import 'package:provider/provider.dart';
 
 import 'data/di/service_locator.dart';
 import 'data/providers/app_state_manager.dart';
+import 'firebase_options.dart';
 import 'views/auth/auth_screen.dart';
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
   setup();
   runApp(EasyLocalization(
     fallbackLocale: const Locale('ar', 'SA'),
@@ -29,6 +34,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => AppStateManager()),
+        ChangeNotifierProvider(create: (_) => AuthProvider()),
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
@@ -38,8 +44,9 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         theme: ThemeApp.light,
         // home: const TestScreen(),
-        // home:  const AuthScreen(),
-        home: const MainScreen(),
+        home:  const AuthScreen(),
+        // home: const MainScreen(),
+        // home: const VerifyOTP(),
       ),
     );
   }
