@@ -183,7 +183,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           password: password.text);
                       Result result = await Provider.of<AuthProvider>(context,
                               listen: false)
-                          .sendCode(user.phone);
+                          .sendCode(user);
                       if (result is Success) {
                         // ignore: use_build_context_synchronously
                         Navigator.pushAndRemoveUntil(

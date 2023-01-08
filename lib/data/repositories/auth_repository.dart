@@ -58,28 +58,20 @@ class AuthRepository {
     }
   }
 
-  Future<Result> sendCode(String phone,
-      {required auth.PhoneVerificationCompleted verificationCompleted,
-      required auth.PhoneVerificationFailed verificationFailed,
-      required auth.PhoneCodeSent codeSent,
-      required auth.PhoneCodeAutoRetrievalTimeout codeAutoRetrievalTimeout}) async {
+  Future<Result> sendCode(String phone) async {
     try {
-      await _authApi.sendCode(phone,
-          verificationCompleted: verificationCompleted,
-          verificationFailed: verificationFailed,
-          codeSent: codeSent,
-          codeAutoRetrievalTimeout: codeAutoRetrievalTimeout);
-      return Success();
+      bool status=await _authApi.sendCode(phone);
+      return Success(status);
     } catch (e) {
       return Error(e);
     }
   }
 
-  Future<Result> verifyCode(String verificationId, String smsCode) async {
+  Future<Result> verifyCode(String phone, String smsCode) async {
     try {
-      bool status = await _authApi.verifyCode(verificationId, smsCode);
+      bool status = await _authApi.verifyCode(phone, smsCode);
       debugPrint("============ $status ============");
-      return Success();
+      return Success(status);
     } catch (e) {
       return Error(e);
     }

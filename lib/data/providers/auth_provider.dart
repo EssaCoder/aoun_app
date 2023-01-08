@@ -36,23 +36,27 @@ class AuthProvider extends ChangeNotifier {
     }
   }
 
-  Future<Result> sendCode(String phone) async {
+  Future<Result> sendCode(User? user) async {
     try {
-      await _authRepository.sendCode(
-        phone,
-        verificationCompleted: (_) {
-          debugPrint("=============verificationCompleted ===========");
-        },
-        verificationFailed: (_) {
-          debugPrint("=============verificationFailed ===========");},
-        codeSent: (verificationId, _) {
-          debugPrint("=============codeSent ===========");
-          this.verificationId = verificationId;
-        },
-        codeAutoRetrievalTimeout: (_) {
-          debugPrint("=============codeAutoRetrievalTimeout ===========");},
-      );
-      return Success();
+      setUser(user);
+      if(_user?.phone!=null) {
+        Result result=await _authRepository.sendCode(_user!.phone);
+        return result;
+      }
+      return Error();
+    } catch (e) {
+      return Error(e);
+    }
+  }
+  Future<Result> verifyCode(String smsCode) async {
+    try {
+      debugPrint("===============AuthProvider->verifyCode->smsCode: ${smsCode} ==============");
+      setUser(user);
+      if(_user?.phone!=null) {
+        Result result=await _authRepository.verifyCode(_user!.phone,smsCode);
+        return result;
+      }
+      return Error();
     } catch (e) {
       return Error(e);
     }

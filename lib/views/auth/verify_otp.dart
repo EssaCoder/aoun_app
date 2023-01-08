@@ -1,4 +1,7 @@
+import 'package:aoun/data/network/data_response.dart';
+import 'package:aoun/data/providers/auth_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '/views/auth/sign_up_screen.dart';
 import '/views/home/main_screen.dart';
 import '/views/shared/button_widget.dart';
@@ -52,7 +55,15 @@ class _VerifyOTPState extends State<VerifyOTP> {
                   child: Align(
                       alignment: Alignment.center,
                       child: Text(
-                        "Please enter the verification code sent for the number:\n\n +966555444777",
+                        "Please enter the verification code sent for the number:\n\n phone"
+                            .replaceAll(
+                                RegExp(r'phone'),
+                                Provider.of<AuthProvider>(context,
+                                            listen: false)
+                                        .user
+                                        ?.phone
+                                        .toString() ??
+                                    "5555"),
                         style: Theme.of(context).textTheme.subtitle1?.copyWith(
                             fontWeight: FontWeight.bold, fontSize: 17),
                         textAlign: TextAlign.center,
@@ -91,11 +102,18 @@ class _VerifyOTPState extends State<VerifyOTP> {
                 child: ButtonWidget(
                   minWidth: double.infinity,
                   onPressed: () async {
-                    Navigator.push(
+               Result result=await     Provider.of<AuthProvider>(context,listen: false).verifyCode(controllers.join());
+                    if(result is Success) {
+                      // ignore: use_build_context_synchronously
+                      Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (context) => const MainScreen(),
                         ));
+                    }else{
+                      // ignore: use_build_context_synchronously
+                      SharedComponents.showSnackBar(context, "OTP not Correct");
+                    }
 
                     // if (_formKey.currentState!.validate()) {}
                   },
