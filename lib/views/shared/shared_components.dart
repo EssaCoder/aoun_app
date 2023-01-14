@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:avatar_glow/avatar_glow.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '/views/shared/assets_variables.dart';
@@ -123,52 +124,53 @@ class SharedComponents {
       ),
     );
   }
-  // static Future<dynamic> showBottomSheet(BuildContext context,
-  //     {double? height, Widget? child}) {
-  //   final mediaQuery = MediaQuery.of(context);
-  //   return showModalBottomSheet(
-  //     enableDrag: true,
-  //     isScrollControlled: true,
-  //     backgroundColor: Colors.transparent,
-  //     elevation: 0,
-  //     shape: const RoundedRectangleBorder(
-  //         borderRadius: BorderRadius.vertical(
-  //             top: Radius.circular(SharedValues.borderRadius * 2))),
-  //     context: context,
-  //     builder: (context) => BackdropFilter(
-  //       filter: ImageFilter.blur(sigmaX: 3, sigmaY: 3),
-  //       child: Container(
-  //         padding:
-  //         EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
-  //         height: (mediaQuery.orientation == Orientation.portrait)
-  //             ? height ?? (mediaQuery.size.height * 0.75)
-  //             : mediaQuery.size.height,
-  //         decoration: BoxDecoration(
-  //           color: Theme.of(context).scaffoldBackgroundColor,
-  //           borderRadius: const BorderRadius.vertical(
-  //               top: Radius.circular(SharedValues.borderRadius)),
-  //         ),
-  //         child: Column(
-  //           children: [
-  //             Padding(
-  //               padding: const EdgeInsets.symmetric(
-  //                   vertical: SharedValues.padding * 2),
-  //               child: Container(
-  //                 width: 50,
-  //                 height: 5,
-  //                 decoration: BoxDecoration(
-  //                     color: Theme.of(context).dividerColor,
-  //                     borderRadius:
-  //                     BorderRadius.circular(SharedValues.borderRadius)),
-  //               ),
-  //             ),
-  //             Expanded(child: child ?? const SizedBox.shrink())
-  //           ],
-  //         ),
-  //       ),
-  //     ),
-  //   );
-  // }
+  static Future<dynamic> showOverlayLoading(
+      BuildContext context, Function() futureFun, {Color? color,Color? progressColor}) =>
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        barrierColor: Colors.transparent,
+        builder: (BuildContext context) {
+          return WillPopScope(
+            onWillPop: () async => false,
+            child: FutureBuilder(
+                future: futureFun(),
+                builder: (_, snapshot) {
+                  if(snapshot.connectionState==ConnectionState.done){
+                    WidgetsBinding.instance.addPostFrameCallback((_) {
+                      Navigator.pop(context);
+                    });
+                  }
+                  return SizedBox(
+                      height: 200,
+                      width: 200,
+                      child: Align(
+                        child: AvatarGlow(
+                          glowColor: color??Theme.of(context).primaryColor,
+                          duration: const Duration(
+                            milliseconds: 2000,
+                          ),
+                          repeat: true,
+                          showTwoGlows: true,
+                          endRadius: 50,
+                          child: Container(
+                              height: 50,
+                              width: 50,
+                              decoration: BoxDecoration(
+                                  color: Colors.white12,
+                                  borderRadius: BorderRadius.circular(120)),
+                              child:  CircularProgressIndicator(
+                                backgroundColor: progressColor??Theme.of(context).colorScheme.primary,
+                                valueColor:
+                                AlwaysStoppedAnimation<Color>(color??Theme.of(context).primaryColor),
+                              )),
+                        ),
+                      ));
+                }
+            ),
+          );
+        },
+      );
 
   static showSnackBar(context, String text, {Color? backgroundColor}) {
     return WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -191,7 +193,7 @@ class SharedComponents {
     });
   }
 
-  static Widget emptyWidget() => Center(
+  static Widget emptyWidget({Color? color}) => Center(
         child: Builder(
             builder: (context) => Column(
                   mainAxisSize: MainAxisSize.min,
@@ -200,18 +202,18 @@ class SharedComponents {
                         child: Padding(
                       padding: const EdgeInsets.all(SharedValues.padding),
                       child: Icon(Icons.hourglass_empty_sharp,
-                          size: 50, color: Theme.of(context).primaryColor),
+                          size: 50, color: color??Theme.of(context).primaryColor),
                     )),
                     Flexible(
                         child: Padding(
-                            padding: EdgeInsets.all(SharedValues.padding),
+                            padding: const EdgeInsets.all(SharedValues.padding),
                             child: Text(
                               "No Data !!",
                               style: Theme.of(context)
                                   .textTheme
                                   .headline3
                                   ?.copyWith(
-                                      color: Theme.of(context).primaryColor),
+                                      color: color??Theme.of(context).primaryColor),
                             )))
                   ],
                 )),

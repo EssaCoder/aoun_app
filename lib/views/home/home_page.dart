@@ -1,10 +1,12 @@
 import 'package:aoun/data/providers/auth_provider.dart';
+import 'package:aoun/data/providers/pilgrims_provider.dart';
 import 'package:aoun/views/auth/auth_screen.dart';
 import 'package:aoun/views/auth/users_screen.dart';
 import 'package:aoun/views/pilgrims/add_pilgrims.dart';
 import 'package:aoun/views/pilgrims/view_pilgrims.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import '/views/shared/assets_variables.dart';
@@ -19,6 +21,11 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  @override
+  void initState() {
+    debugPrint("===============HomePage->initState================");
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -188,7 +195,11 @@ class _HomePageState extends State<HomePage> {
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => AddPilgrims()));
             }),
-            _buildHomeButton("Read QR Code", AssetsVariable.barcodeRead, () {
+            _buildHomeButton("Read QR Code", AssetsVariable.barcodeRead,
+                () async {
+              widget.controller?.animateToPage(1,
+                  duration: const Duration(milliseconds: 20),
+                  curve: Curves.decelerate);
               // Navigator.push(context, MaterialPageRoute(builder: (context) => AddPilgrims()));
             }),
             _buildHomeButton("View Pilgrims", AssetsVariable.listCheck, () {

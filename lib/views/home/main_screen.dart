@@ -1,5 +1,6 @@
 import 'package:aoun/views/home/home_page.dart';
 import 'package:aoun/views/home/profile_page.dart';
+import 'package:aoun/views/home/read_qr_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import '/views/shared/assets_variables.dart';
@@ -33,16 +34,25 @@ class _MainScreenState extends State<MainScreen> {
             body: PageView(
               controller: controller,
               onPageChanged: (value) => setState(() {
-                menuSelected = value;
+                debugPrint("===============MainScreen->PageView->value: $value================");
 
+                menuSelected = value;
               }),
-              children:  [HomePage(controller: controller),const SizedBox(),const ProfilePage()],
+              children: [
+                HomePage(controller: controller),
+                 const ReadQRPage(),
+                const ProfilePage()
+              ],
             ),
             extendBodyBehindAppBar: true,
             bottomNavigationBar: BottomNavigationBar(
               elevation: 0.0,
               backgroundColor: Theme.of(context).primaryColor,
-              onTap: (index) => controller?.animateToPage(index, duration: const Duration(milliseconds: 20), curve: Curves.decelerate),
+              onTap: (index) {
+                debugPrint("===============MainScreen->BottomNavigationBar->index: $index================");
+
+                controller?.jumpToPage(index);
+              },
               items: [
                 _buildBottomNavigation(AssetsVariable.home, menuSelected == 0),
                 _buildBottomNavigation(

@@ -27,4 +27,13 @@ class PilgrimsRepository {
       return Error(e);
     }
   }
+  Future<Result> getPilgrim(int id) async {
+    try {
+      final response = await _pilgrimsApi.getPilgrim(id);
+      final pilgrim=Pilgrim.fromJson(response.data());
+      return Success(pilgrim);
+    } catch (e) {
+      return Error(e);
+    }
+  }
 }

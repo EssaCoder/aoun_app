@@ -16,6 +16,7 @@ import 'data/models/user.dart';
 import 'data/providers/app_state_manager.dart';
 import 'firebase_options.dart';
 import 'views/auth/auth_screen.dart';
+//TODO: Configuration iOS flutter_barcode_scanner
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

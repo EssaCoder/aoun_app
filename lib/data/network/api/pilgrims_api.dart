@@ -23,4 +23,15 @@ class PilgrimsApi {
       rethrow;
     }
   }
+  Future<QueryDocumentSnapshot<Map<String, dynamic>>> getPilgrim(int id) async {
+    try {
+      final response=  await _fireStore
+          .collection(Endpoints.pilgrims)
+      .where("id",isEqualTo: id)
+          .get();
+      return response.docs.first;
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

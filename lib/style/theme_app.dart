@@ -45,7 +45,7 @@ class ThemeApp {
           brightness: Brightness.light,
           primary: Color(0xFF9BEADD),
           onPrimary: Color(0xFFFFFFFF),
-          secondary: Color(0x4B53A57C),
+          secondary: Color(0x4B5D655D),
           onSecondary: Color(0xFFFFFFFF),
           error: Color(0xFFE86173),
           onError: Color(0xFFFFFFFF),
