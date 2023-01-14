@@ -39,7 +39,7 @@ class _ButtonWidgetState extends State<ButtonWidget> {
         builder: (context) {
           if (isLoading) {
             return CircularProgressIndicator(
-              color: Theme.of(context).primaryColor,
+              color: Theme.of(context).colorScheme.background,
             );
           }
           return widget.child?? const SizedBox.shrink();

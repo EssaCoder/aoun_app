@@ -53,6 +53,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
     super.dispose();
   }
 
+  final _userTypes = [
+    DropdownMenuItemModel(id: 1, text: "User"),
+    DropdownMenuItemModel(id: 2, text: "Employee"),
+  ];
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -126,11 +130,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   padding: const EdgeInsets.all(SharedValues.padding),
                   child: DropdownFieldWidget(
                     keyDropDown: GlobalKey(),
-                    items: [
-                      DropdownMenuItemModel(id: 1, text: "Employee"),
-                      DropdownMenuItemModel(id: 2, text: "User")
-                    ],
+                    value: _userTypes.first,
+                    items: _userTypes,
                     hintText: "User Type",
+                    validator: (value) {
+                      if (value != null) {
+                        return null;
+                      }
+                      return "This field is required";
+                    },
                     onChanged: (value) {
                       userType = value;
                     },
@@ -159,10 +167,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     textInputAction: TextInputAction.none,
                     obscureText: true,
                     validator: (value) {
-                      if (confirmPassword.text == password.text) {
-                        return null;
+                      if (value == null || value.isEmpty) {
+                        return "This field is required";
+                      } else if (confirmPassword.text != password.text) {
+                        return "Password does not match";
                       }
-                      return "كلمة المرور غير متطابقة";
+                      return null;
                     },
                   ),
                 ),
@@ -171,35 +181,36 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   child: ButtonWidget(
                     minWidth: double.infinity,
                     onPressed: () async {
-                      final user = User(
-                          id: DateTime.now().millisecondsSinceEpoch,
-                          name: name.text,
-                          email: email.text,
-                          phone: phone.text,
-                          identityNumber: identityNumber.text,
-                          userType: userType?.text == UserType.user.name
-                              ? UserType.user
-                              : UserType.employee,
-                          password: password.text);
-                      Result result = await Provider.of<AuthProvider>(context,
-                              listen: false)
-                          .sendCode(user);
-                      if (result is Success) {
-                        // ignore: use_build_context_synchronously
-                        Navigator.pushAndRemoveUntil(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const VerifyOTP(),
-                            ),
-                            (_) => false);
-                      }
-                      else if(result is Error){
-                        // ignore: use_build_context_synchronously
-                        SharedComponents.showSnackBar(
-                            context, "Error occurred !!",
-                            backgroundColor:
-                            // ignore: use_build_context_synchronously
-                            Theme.of(context).colorScheme.error);
+                      if (_formKey.currentState!.validate()) {
+                        final user = User(
+                            id: DateTime.now().millisecondsSinceEpoch,
+                            name: name.text,
+                            email: email.text,
+                            phone: phone.text,
+                            identityNumber: identityNumber.text,
+                            userType: userType?.text == UserType.user.name
+                                ? UserType.user
+                                : UserType.employee,
+                            password: password.text);
+                        Result result = await Provider.of<AuthProvider>(context,
+                                listen: false)
+                            .sendCode(user);
+                        if (result is Success) {
+                          // ignore: use_build_context_synchronously
+                          Navigator.pushAndRemoveUntil(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const VerifyOTP(),
+                              ),
+                              (_) => false);
+                        } else if (result is Error) {
+                          // ignore: use_build_context_synchronously
+                          SharedComponents.showSnackBar(
+                              context, "Error occurred !!",
+                              backgroundColor:
+                                  // ignore: use_build_context_synchronously
+                                  Theme.of(context).colorScheme.error);
+                        }
                       }
                     },
                     child: Text(

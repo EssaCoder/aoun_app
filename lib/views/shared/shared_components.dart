@@ -8,65 +8,76 @@ import '/views/shared/shared_values.dart';
 class SharedComponents {
   SharedComponents._privateConstructor();
   static final SharedComponents _instance =
-  SharedComponents._privateConstructor();
+      SharedComponents._privateConstructor();
   static SharedComponents get instance => _instance;
 
-  static Widget appBar( {required String title,String? details,bool? withBackBtn,Widget? leading}) => Builder(
-      builder: (context) => Container(
-        width: double.infinity,
-        height: 150,
-        decoration: BoxDecoration(
-          color: Theme.of(context).primaryColor,
-          borderRadius: const BorderRadius.vertical(
-              bottom: Radius.circular(SharedValues.borderRadius * 2)),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            if(details==null)
-            SizedBox(
-              height: 50,
-              child: withBackBtn == false
-                  ? null
-                  : IconButton(
-                  onPressed: () => Navigator.pop(context),
-                  icon: const Icon(Icons.arrow_back)),
-            ),
-            if(details!=null)
-            Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(SharedValues.padding * 2,
-                      0, SharedValues.padding * 2, SharedValues.padding),
-                  child: Align(
-                    alignment: AlignmentDirectional.bottomStart,
-                    child: Text(
-                      details,
-                      style: Theme.of(context).textTheme.headline2,
-                    ),
-                  ),
-                )),
-            Expanded(
-                child: Row(
+  static Widget appBar(
+          {required String title,
+          String? details,
+          bool? withBackBtn,
+          Widget? leading}) =>
+      Builder(
+          builder: (context) => Container(
+                width: double.infinity,
+                height: 150,
+                decoration: BoxDecoration(
+                  color: Theme.of(context).primaryColor,
+                  borderRadius: const BorderRadius.vertical(
+                      bottom: Radius.circular(SharedValues.borderRadius * 2)),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.fromLTRB(SharedValues.padding * 2,
-                            0, SharedValues.padding * 2, SharedValues.padding),
+                    if (details == null)
+                      SizedBox(
+                        height: 50,
+                        child: withBackBtn == false
+                            ? null
+                            : IconButton(
+                                onPressed: () => Navigator.pop(context),
+                                icon: const Icon(Icons.arrow_back)),
+                      ),
+                    if (details != null)
+                      Expanded(
+                          child: Padding(
+                        padding: const EdgeInsets.fromLTRB(
+                            SharedValues.padding * 2,
+                            0,
+                            SharedValues.padding * 2,
+                            SharedValues.padding),
                         child: Align(
-                          alignment: AlignmentDirectional.centerStart,
+                          alignment: AlignmentDirectional.bottomStart,
                           child: Text(
-                            title,
-                            style: Theme.of(context).textTheme.headline1,
+                            details,
+                            style: Theme.of(context).textTheme.headline2,
                           ),
                         ),
-                      ),
-                    ),
-                    leading??const SizedBox.shrink()
+                      )),
+                    Expanded(
+                        child: Row(
+                      children: [
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.fromLTRB(
+                                SharedValues.padding * 2,
+                                0,
+                                SharedValues.padding * 2,
+                                SharedValues.padding),
+                            child: Align(
+                              alignment: AlignmentDirectional.centerStart,
+                              child: Text(
+                                title,
+                                style: Theme.of(context).textTheme.headline1,
+                              ),
+                            ),
+                          ),
+                        ),
+                        leading ?? const SizedBox.shrink()
+                      ],
+                    )),
                   ],
-                )),
-          ],
-        ),
-      ));
+                ),
+              ));
   static Future<dynamic> showBottomSheet(BuildContext context,
       {double? height, Widget? child}) {
     return showModalBottomSheet(
@@ -82,7 +93,7 @@ class SharedComponents {
         filter: ImageFilter.blur(sigmaX: 3, sigmaY: 3),
         child: Padding(
           padding:
-          EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+              EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
           child: Container(
             padding: const EdgeInsets.all(SharedValues.padding),
             decoration: BoxDecoration(
@@ -100,8 +111,8 @@ class SharedComponents {
                     height: 5,
                     decoration: BoxDecoration(
                         color: Theme.of(context).dividerColor,
-                        borderRadius: BorderRadius.circular(
-                            SharedValues.borderRadius)),
+                        borderRadius:
+                            BorderRadius.circular(SharedValues.borderRadius)),
                   ),
                 ),
                 child ?? const SizedBox.shrink(),
@@ -159,7 +170,6 @@ class SharedComponents {
   //   );
   // }
 
-
   static showSnackBar(context, String text, {Color? backgroundColor}) {
     return WidgetsBinding.instance.addPostFrameCallback((_) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -180,4 +190,30 @@ class SharedComponents {
       ));
     });
   }
+
+  static Widget emptyWidget() => Center(
+        child: Builder(
+            builder: (context) => Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Flexible(
+                        child: Padding(
+                      padding: const EdgeInsets.all(SharedValues.padding),
+                      child: Icon(Icons.hourglass_empty_sharp,
+                          size: 50, color: Theme.of(context).primaryColor),
+                    )),
+                    Flexible(
+                        child: Padding(
+                            padding: EdgeInsets.all(SharedValues.padding),
+                            child: Text(
+                              "No Data !!",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .headline3
+                                  ?.copyWith(
+                                      color: Theme.of(context).primaryColor),
+                            )))
+                  ],
+                )),
+      );
 }

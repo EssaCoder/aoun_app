@@ -16,7 +16,7 @@ class ThemeApp {
       scaffoldBackgroundColor: const Color(0xFF329F95),
       iconTheme: const IconThemeData(color: Color(0xFFFFFFFF), size: 25),
       dividerColor: const Color(0xFFEAEAEA),
-      indicatorColor: const Color(0xFFEAEAEA),
+      indicatorColor: const Color(0xFF939393),
       cardColor: const Color(0xFFFFFFFF),
       floatingActionButtonTheme: const FloatingActionButtonThemeData(
           backgroundColor: Color(0xFF4AB3A9)),
@@ -51,7 +51,7 @@ class ThemeApp {
           onError: Color(0xFFFFFFFF),
           background: Color(0xFFFFFFFF),
           onBackground: Color(0xFF000000),
-          surface: Color(0xFFC1CAC5),
+          surface: Color(0xFF939393),
           onSurface: Color(0xFF408B6A)),
       textTheme: const TextTheme(
           headline1: TextStyle(
@@ -75,7 +75,7 @@ class ThemeApp {
           headlineLarge: TextStyle(
               fontWeight: FontWeight.w400,
               fontSize: 14,
-              color: Color(0xFFBDBDBD)),
+              color: Color(0xFF939393)),
           bodyText2: TextStyle(fontSize: 14, color: Color(0xFF939393)),
           subtitle1: TextStyle(fontSize: 12, color: Color(0xFF4AB3A9)),
           subtitle2: TextStyle(fontSize: 12, color: Color(0xFF53A57C)),

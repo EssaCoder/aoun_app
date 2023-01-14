@@ -1,9 +1,12 @@
+import 'package:aoun/data/providers/auth_provider.dart';
+import 'package:aoun/views/auth/auth_screen.dart';
 import 'package:aoun/views/auth/users_screen.dart';
 import 'package:aoun/views/pilgrims/add_pilgrims.dart';
 import 'package:aoun/views/pilgrims/view_pilgrims.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:provider/provider.dart';
 import '/views/shared/assets_variables.dart';
 import '/views/shared/shared_values.dart';
 
@@ -21,6 +24,35 @@ class _HomePageState extends State<HomePage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        const SizedBox(height: SharedValues.padding * 2),
+        PopupMenuButton<int>(
+            onSelected: (value) async {
+              await Provider.of<AuthProvider>(context, listen: false).signOut();
+              // ignore: use_build_context_synchronously
+              Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const AuthScreen(),
+                  ),
+                  (route) => false);
+            },
+            itemBuilder: (BuildContext context) => <PopupMenuEntry<int>>[
+                  PopupMenuItem(
+                    value: 1,
+                    child: Text(
+                      "Sign Out",
+                      style: Theme.of(context).textTheme.headline5,
+                    ),
+                  )
+                ],
+            child: Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: SharedValues.padding),
+              child: Icon(
+                Icons.more_vert,
+                color: Theme.of(context).colorScheme.onPrimary,
+              ),
+            )),
         const SizedBox(height: SharedValues.padding * 2),
         Padding(
             padding: const EdgeInsets.all(SharedValues.padding),
@@ -74,8 +106,7 @@ class _HomePageState extends State<HomePage> {
                                           TextSpan(
                                               text:
                                                   "Name: Ali Ahmed Abdullah\n\n"),
-                                          TextSpan(
-                                              text: "ID: 121316465798")
+                                          TextSpan(text: "ID: 121316465798")
                                         ],
                                         style: Theme.of(context)
                                             .textTheme

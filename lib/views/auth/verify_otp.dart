@@ -63,7 +63,7 @@ class _VerifyOTPState extends State<VerifyOTP> {
                                         .user
                                         ?.phone
                                         .toString() ??
-                                    "5555"),
+                                    "+966XXXXXXXXX"),
                         style: Theme.of(context).textTheme.subtitle1?.copyWith(
                             fontWeight: FontWeight.bold, fontSize: 17),
                         textAlign: TextAlign.center,
@@ -102,15 +102,17 @@ class _VerifyOTPState extends State<VerifyOTP> {
                 child: ButtonWidget(
                   minWidth: double.infinity,
                   onPressed: () async {
-               Result result=await     Provider.of<AuthProvider>(context,listen: false).verifyCode(controllers.join());
-                    if(result is Success) {
+                    Result result =
+                        await Provider.of<AuthProvider>(context, listen: false)
+                            .verifyCode(controllers.join());
+                    if (result is Success) {
                       // ignore: use_build_context_synchronously
                       Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const MainScreen(),
-                        ));
-                    }else{
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const MainScreen(),
+                          ));
+                    } else {
                       // ignore: use_build_context_synchronously
                       SharedComponents.showSnackBar(context, "OTP not Correct");
                     }

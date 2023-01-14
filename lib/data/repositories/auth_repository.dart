@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:aoun/data/network/http_exception.dart';
-import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:flutter/foundation.dart';
 import '/data/local/sharedpref_helper/preference_variable.dart';
 import '/data/local/sharedpref_helper/preferences.dart';
@@ -18,7 +17,7 @@ class AuthRepository {
     try {
       debugPrint(
           "==========AuthRepository->signUp->user:${user.toJson()} ==========");
-      String? id = await _authApi.setUser(user.toJson());
+      var id = await _authApi.setUser(user.toJson());
       if (id == null) {
         return Error(ExistUserException());
       }
@@ -31,11 +30,11 @@ class AuthRepository {
     }
   }
 
-  Future<Result> signIn(int studentNumber, String password) async {
+  Future<Result> signIn(int userID, String password) async {
     try {
       debugPrint(
-          "==========AuthRepository->signIn->studentNumber/password:$studentNumber / $password ==========");
-      final response = await _authApi.getUser(studentNumber, password);
+          "==========AuthRepository->signIn->studentNumber/password:$userID / $password ==========");
+      final response = await _authApi.getUser(userID, password);
       final data = {
         ...response.data(),
       };

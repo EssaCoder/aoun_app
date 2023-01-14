@@ -1,11 +1,16 @@
+import 'package:aoun/data/models/pilgrim.dart';
+import 'package:aoun/data/providers/pilgrims_provider.dart';
+import 'package:aoun/views/pilgrims/pilgrim_details.dart';
 import 'package:aoun/views/shared/assets_variables.dart';
 import 'package:aoun/views/shared/button_widget.dart';
 import 'package:aoun/views/shared/dropdown_field_widget.dart';
+import 'package:aoun/views/shared/loading_widget.dart';
 import 'package:aoun/views/shared/shared_components.dart';
 import 'package:aoun/views/shared/shared_values.dart';
 import 'package:aoun/views/shared/text_field_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
 
 class ViewPilgrims extends StatefulWidget {
   const ViewPilgrims({Key? key}) : super(key: key);
@@ -17,6 +22,7 @@ class ViewPilgrims extends StatefulWidget {
 class _ViewPilgrimsState extends State<ViewPilgrims> {
   @override
   Widget build(BuildContext context) {
+    final provider = Provider.of<PilgrimsProvider>(context, listen: false);
     return SafeArea(
         child: Scaffold(
       backgroundColor: Theme.of(context).colorScheme.onPrimary,
@@ -90,65 +96,92 @@ class _ViewPilgrimsState extends State<ViewPilgrims> {
                 ),
               )),
           Expanded(
-              child: ListView.builder(
-            padding: const EdgeInsets.all(SharedValues.padding),
-            itemCount: 10,
-            itemBuilder: (context, index) => InkWell(
-              borderRadius: BorderRadius.circular(SharedValues.borderRadius),
-              onTap: () {},
-              child: Container(
-                height: 80,
-                width: double.infinity,
-                padding: const EdgeInsets.all(SharedValues.padding),
-                margin: const EdgeInsets.all(SharedValues.padding),
-                decoration: BoxDecoration(
-                    borderRadius:
-                        BorderRadius.circular(SharedValues.borderRadius),
-                    color: Theme.of(context).primaryColor),
-                child: Row(
-                  children: [
-                    Expanded(
-                        child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Expanded(
-                            child: Align(
-                                alignment: AlignmentDirectional.centerStart,
-                                child: Text("Bara Ali Ahmed",
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .headline3))),
-                        Expanded(
-                            child: Align(
-                                alignment: AlignmentDirectional.centerStart,
-                                child: Text("Bara Ali Ahmed",
-                                    style:
-                                        Theme.of(context).textTheme.button))),
-                      ],
-                    )),
-                    PopupMenuButton<String>(
-                        onSelected: (value) {},
-                        itemBuilder: (BuildContext context) =>
-                            <PopupMenuEntry<String>>[
-                              for (var item in ["Delete"])
-                                PopupMenuItem(
-                                  value: item,
-                                  child: Text(
-                                    item,
-                                    style:
-                                        Theme.of(context).textTheme.subtitle2,
-                                  ),
-                                )
-                            ],
-                        child: Icon(
-                          Icons.more_vert,
-                          color: Theme.of(context).colorScheme.onPrimary,
-                        )),
-                  ],
-                ),
-              ),
-            ),
-          ))
+              child: FutureBuilder(
+                  future: provider.getPilgrims(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const LoadingWidget();
+                    } else {
+                      if (provider.pilgrims.isEmpty) {
+                        return SharedComponents.emptyWidget();
+                      }
+                      return ListView.builder(
+                        padding: const EdgeInsets.all(SharedValues.padding),
+                        itemCount: provider.pilgrims.length,
+                        itemBuilder: (context, index) => InkWell(
+                          borderRadius:
+                              BorderRadius.circular(SharedValues.borderRadius),
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => PilgrimDetails(
+                                      pilgrim: provider.pilgrims[index]),
+                                ));
+                          },
+                          child: Container(
+                            height: 80,
+                            width: double.infinity,
+                            padding: const EdgeInsets.all(SharedValues.padding),
+                            margin: const EdgeInsets.all(SharedValues.padding),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(
+                                    SharedValues.borderRadius),
+                                color: Theme.of(context).primaryColor),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                    child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Expanded(
+                                        child: Align(
+                                            alignment: AlignmentDirectional
+                                                .centerStart,
+                                            child: Text(
+                                                provider.pilgrims[index].name,
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .headline3))),
+                                    Expanded(
+                                        child: Align(
+                                            alignment: AlignmentDirectional
+                                                .centerStart,
+                                            child: Text(
+                                                provider.pilgrims[index].phone,
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .button))),
+                                  ],
+                                )),
+                                PopupMenuButton<String>(
+                                    onSelected: (value) {},
+                                    itemBuilder: (BuildContext context) =>
+                                        <PopupMenuEntry<String>>[
+                                          for (var item in ["Delete"])
+                                            PopupMenuItem(
+                                              value: item,
+                                              child: Text(
+                                                item,
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .subtitle2,
+                                              ),
+                                            )
+                                        ],
+                                    child: Icon(
+                                      Icons.more_vert,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onPrimary,
+                                    )),
+                              ],
+                            ),
+                          ),
+                        ),
+                      );
+                    }
+                  }))
         ],
       ),
     ));

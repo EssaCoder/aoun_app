@@ -1,92 +1,79 @@
+import 'dart:convert';
+import 'dart:ui';
+import 'package:permission_handler/permission_handler.dart';
+
+import 'package:aoun/data/models/pilgrim.dart';
+import 'package:aoun/data/utils/utils.dart';
 import 'package:aoun/views/shared/assets_variables.dart';
 import 'package:aoun/views/shared/button_widget.dart';
 import 'package:aoun/views/shared/dropdown_field_widget.dart';
 import 'package:aoun/views/shared/shared_components.dart';
 import 'package:aoun/views/shared/shared_values.dart';
 import 'package:aoun/views/shared/text_field_widget.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 
 class PilgrimDetails extends StatefulWidget {
-  const PilgrimDetails({Key? key}) : super(key: key);
-
+  const PilgrimDetails({Key? key, required this.pilgrim}) : super(key: key);
+  final Pilgrim pilgrim;
   @override
   State<PilgrimDetails> createState() => _PilgrimDetailsState();
 }
 
 class _PilgrimDetailsState extends State<PilgrimDetails> {
+  final GlobalKey globalKey = GlobalKey();
+
   @override
   Widget build(BuildContext context) {
+    final list = [
+      {
+        "title": "Full Name",
+        "data": widget.pilgrim.name,
+      },
+      {
+        "title": "Address",
+        "data": widget.pilgrim.address,
+      },
+      {
+        "title": "Mobile Number",
+        "data": widget.pilgrim.phone,
+      },
+      {
+        "title": "Supervisor Phone",
+        "data": widget.pilgrim.supervisorPhone,
+      },
+      {
+        "title": "Health Status",
+        "data": widget.pilgrim.healthStatus,
+      },
+      {
+        "title": "Health Problrm",
+        "data": widget.pilgrim.healthProblem,
+      },
+    ];
     return SafeArea(
         child: Scaffold(
       backgroundColor: Theme.of(context).colorScheme.onPrimary,
       body: Column(
         children: [
           SharedComponents.appBar(
-              title: "Bara Ali Ahmed",
-              leading: InkWell(
-                onTap: () {
-                  int searchType = -1;
-                  SharedComponents.showBottomSheet(context,
-                      child: StatefulBuilder(builder: (ctx, setStateWidget) {
-                    return ListView(
-                      physics: const NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      children: [
-                        const SizedBox(height: SharedValues.padding),
-                        DropdownFieldWidget(
-                            hintText: "Filter by",
-                            prefixIcon:
-                                const Icon(Icons.keyboard_arrow_down_rounded),
-                            items: [
-                              DropdownMenuItemModel(
-                                  text: "Name or Number", id: 0),
-                              DropdownMenuItemModel(
-                                  text: "Search by Service", id: 1)
-                            ],
-                            onChanged: (value) {
-                              setStateWidget(() {
-                                searchType = value?.id ?? -1;
-                              });
-                            },
-                            keyDropDown: GlobalKey()),
-                        const SizedBox(height: SharedValues.padding),
-                        if (searchType == 0)
-                          TextFieldWidget(
-                              controller: TextEditingController(),
-                              hintText: "Building name"),
-                        if (searchType == 1)
-                          DropdownFieldWidget(
-                              hintText: "Select Service",
-                              prefixIcon:
-                                  const Icon(Icons.keyboard_arrow_down_rounded),
-                              items: [
-                                DropdownMenuItemModel(text: "11", id: 1),
-                                DropdownMenuItemModel(text: "22", id: 2)
-                              ],
-                              onChanged: (value) {},
-                              keyDropDown: GlobalKey()),
-                        const SizedBox(height: SharedValues.padding * 4),
-                        ButtonWidget(
-                          child: Text("Search",
-                              style: Theme.of(context).textTheme.button),
-                          onPressed: () async {},
-                        )
-                      ],
-                    );
-                  }));
-                },
-                child: Container(
-                  width: 45,
-                  height: 45,
-                  alignment: Alignment.center,
-                  margin: const EdgeInsets.all(SharedValues.padding),
-                  decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.onPrimary,
-                      borderRadius:
-                          BorderRadius.circular(SharedValues.borderRadius)),
-                  child: SvgPicture.asset(AssetsVariable.filterList,
-                      width: 20, height: 20, fit: BoxFit.scaleDown),
+              title: widget.pilgrim.name,
+              leading: Padding(
+                padding: const EdgeInsets.all(SharedValues.padding),
+                child: InkWell(
+                  onTap: () async {
+                    PermissionStatus permissionStatus =
+                        await Permission.storage.request();
+                    if (permissionStatus.isGranted) {
+                      String? path = await Utils.saveWidget(globalKey);
+                      // ignore: use_build_context_synchronously
+                      SharedComponents.showSnackBar(context, "$path");
+                    }
+                  },
+                  child: const Icon(Icons.download),
                 ),
               )),
           Expanded(
@@ -97,7 +84,7 @@ class _PilgrimDetailsState extends State<PilgrimDetails> {
                 children: [
                   Container(
                     width: 2,
-                    height: 145,
+                    height: 200,
                     margin: const EdgeInsets.all(SharedValues.padding),
                     padding: const EdgeInsets.all(SharedValues.padding),
                     decoration: BoxDecoration(
@@ -106,15 +93,42 @@ class _PilgrimDetailsState extends State<PilgrimDetails> {
                             BorderRadius.circular(SharedValues.borderRadius)),
                   ),
                   Expanded(
-                      child: Align(
-                    child: Container(
-                      height: 150,
-                      width: MediaQuery.of(context).size.width * 0.75,
-                      decoration: BoxDecoration(
-                          border: Border.all(
-                              color: Theme.of(context).primaryColor, width: 2),
-                          borderRadius:
-                              BorderRadius.circular(SharedValues.borderRadius)),
+                      child: RepaintBoundary(
+                    key: globalKey,
+                    child: Align(
+                      child: Container(
+                        height: 200,
+                        width: MediaQuery.of(context).size.width * 0.75,
+                        decoration: BoxDecoration(
+                            color: Theme.of(context).colorScheme.background,
+                            border: Border.all(
+                                color: Theme.of(context).primaryColor,
+                                width: 2),
+                            borderRadius: BorderRadius.circular(
+                                SharedValues.borderRadius)),
+                        child: Column(
+                          children: [
+                            Expanded(
+                              child: QrImage(
+                                data: widget.pilgrim.id.toString(),
+                                version: QrVersions.auto,
+                                size: 150.0,
+                              ),
+                            ),
+                            Text(
+                              "Name: ${widget.pilgrim.name}",
+                              style: Theme.of(context).textTheme.headline5,
+                            ),
+                            Padding(
+                              padding:const EdgeInsets.all(SharedValues.padding),
+                              child: Text(
+                                "ID: ${widget.pilgrim.id}",
+                                style: Theme.of(context).textTheme.headline5,
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
                     ),
                   ))
                 ],
@@ -125,7 +139,7 @@ class _PilgrimDetailsState extends State<PilgrimDetails> {
                 children: [
                   Container(
                     width: 2,
-                    height: 80 * 4,
+                    height: 80 * 4.7,
                     margin: const EdgeInsets.all(SharedValues.padding),
                     padding: const EdgeInsets.all(SharedValues.padding),
                     decoration: BoxDecoration(
@@ -141,17 +155,17 @@ class _PilgrimDetailsState extends State<PilgrimDetails> {
                       child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            for (var i = 0; i < 5; ++i) ...[
+                            for (var item in list) ...[
                               const SizedBox(height: SharedValues.padding),
                               Text(
-                                "Full Name",
+                                item["title"].toString(),
                                 style: Theme.of(context).textTheme.bodyText2,
                               ),
                               Padding(
                                 padding:
                                     const EdgeInsets.all(SharedValues.padding),
                                 child: Text(
-                                  "Bara Ali Ahmed",
+                                  item["data"].toString(),
                                   style: Theme.of(context).textTheme.subtitle1,
                                 ),
                               ),

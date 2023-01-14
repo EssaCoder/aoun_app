@@ -1,3 +1,4 @@
+import 'package:aoun/data/providers/auth_provider.dart';
 import 'package:aoun/views/shared/assets_variables.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -40,7 +41,7 @@ class _SignInScreenState extends State<SignInScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
-          backgroundColor: Theme.of(context).colorScheme.onPrimary,
+      backgroundColor: Theme.of(context).colorScheme.onPrimary,
       body: Column(
         children: [
           SharedComponents.appBar(title: "Sign in"),
@@ -72,7 +73,7 @@ class _SignInScreenState extends State<SignInScreen> {
                   child: TextButton(
                     onPressed: () {},
                     child: Text("Forget password?",
-                        style: Theme.of(context).textTheme.headline3),
+                        style: Theme.of(context).textTheme.headline5),
                   ),
                 ),
                 const SizedBox(height: SharedValues.padding),
@@ -82,12 +83,24 @@ class _SignInScreenState extends State<SignInScreen> {
                   child: ButtonWidget(
                     minWidth: double.infinity,
                     onPressed: () async {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const MainScreen(),
-                          ));
+                      Result result = await Provider.of<AuthProvider>(context,
+                              listen: false)
+                          .signIn(int.parse(userID.text), password.text);
 
+                      if (result is Success) {
+                        // ignore: use_build_context_synchronously
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const MainScreen()));
+                      } else if (result is Error) {
+                        // ignore: use_build_context_synchronously
+                        SharedComponents.showSnackBar(
+                            context, "User ID or password incorrect !!",
+                            backgroundColor:
+                                // ignore: use_build_context_synchronously
+                                Theme.of(context).colorScheme.error);
+                      }
                       // if (_formKey.currentState!.validate()) {}
                     },
                     child: Text(

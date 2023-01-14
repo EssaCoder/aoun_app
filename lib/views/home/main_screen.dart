@@ -3,8 +3,6 @@ import 'package:aoun/views/home/profile_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import '/views/shared/assets_variables.dart';
-import '/views/shared/button_widget.dart';
-import '/views/shared/shared_values.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({Key? key}) : super(key: key);

@@ -5,5 +5,6 @@ class Endpoints {
 
   static const int connectionTimeout = 300;
   static const users = 'users';
+  static const pilgrims = 'pilgrims';
 
 }
