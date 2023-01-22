@@ -84,4 +84,27 @@ class AuthApi {
       rethrow;
     }
   }
+  Future<List<QueryDocumentSnapshot<Map<String, dynamic>>>> showUsers() async {
+    try {
+      final response = await _fireStore
+          .collection(Endpoints.users).get();
+      return response.docs;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<bool> updateUser(String id,Map<String, dynamic> body) async {
+    try {
+      final response=  await _fireStore
+          .collection(Endpoints.users)
+          .where("id", isEqualTo: int.parse(id))
+          .get();
+      await _fireStore
+          .collection(Endpoints.users).doc(response.docs.firstOrNull?.id).update(body);
+      return true;
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

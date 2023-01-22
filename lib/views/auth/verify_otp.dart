@@ -1,5 +1,6 @@
 import 'package:aoun/data/network/data_response.dart';
 import 'package:aoun/data/providers/auth_provider.dart';
+import 'package:aoun/views/auth/sign_in_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '/views/auth/sign_up_screen.dart';
@@ -107,11 +108,12 @@ class _VerifyOTPState extends State<VerifyOTP> {
                             .verifyCode(controllers.join());
                     if (result is Success) {
                       // ignore: use_build_context_synchronously
-                      Navigator.push(
+                      Navigator.pushAndRemoveUntil(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => const MainScreen(),
-                          ));
+                            builder: (context) => const SignInScreen(),
+                          ),
+                              (_) => false);
                     } else {
                       // ignore: use_build_context_synchronously
                       SharedComponents.showSnackBar(context, "OTP not Correct");

@@ -11,5 +11,4 @@ Future<void> setup() async {
   getIt.registerSingleton(AuthRepository(getIt.get<AuthApi>()));
   getIt.registerSingleton(PilgrimsApi());
   getIt.registerSingleton(PilgrimsRepository(getIt.get<PilgrimsApi>()));
-
 }

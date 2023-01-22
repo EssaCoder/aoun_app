@@ -1,78 +1,122 @@
+import 'package:aoun/data/models/user.dart';
+import 'package:aoun/data/providers/auth_provider.dart';
+import 'package:aoun/data/utils/enum.dart';
 import 'package:aoun/views/shared/shared_components.dart';
 import 'package:aoun/views/shared/shared_values.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-class UsersScreen extends StatelessWidget {
+class UsersScreen extends StatefulWidget {
   const UsersScreen({Key? key}) : super(key: key);
 
   @override
+  State<UsersScreen> createState() => _UsersScreenState();
+}
+
+class _UsersScreenState extends State<UsersScreen> {
+  late AuthProvider provider;
+  @override
+  void initState() {
+    provider = Provider.of<AuthProvider>(context, listen: false);
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      SharedComponents.showOverlayLoading(context, () async {
+        await provider.showUsers();
+      });
+    });
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return SafeArea(child: Scaffold(
+    return SafeArea(
+        child: Scaffold(
       backgroundColor: Theme.of(context).colorScheme.onPrimary,
       body: Column(
         children: [
-          SharedComponents.appBar(
-              title: "Users"),
+          SharedComponents.appBar(title: "Users"),
           Expanded(
-              child: ListView.builder(
-                padding: const EdgeInsets.all(SharedValues.padding),
-                itemCount: 10,
-                itemBuilder: (context, index) => InkWell(
-                  borderRadius: BorderRadius.circular(SharedValues.borderRadius),
-                  onTap: () {},
-                  child: Container(
-                    height: 80,
-                    width: double.infinity,
-                    padding: const EdgeInsets.all(SharedValues.padding),
-                    margin: const EdgeInsets.all(SharedValues.padding),
-                    decoration: BoxDecoration(
+              child: Selector<AuthProvider, List<User>>(
+                  selector: (p0, p1) => p1.users,
+                  builder: (context, users, child) {
+                    return ListView.builder(
+                      padding: const EdgeInsets.all(SharedValues.padding),
+                      itemCount: users.length,
+                      itemBuilder: (context, index) => InkWell(
                         borderRadius:
-                        BorderRadius.circular(SharedValues.borderRadius),
-                        color: Theme.of(context).primaryColor),
-                    child: Row(
-                      children: [
-                        Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Expanded(
-                                    child: Align(
-                                        alignment: AlignmentDirectional.centerStart,
-                                        child: Text("Bara Ali Ahmed",
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .headline3))),
-                                Expanded(
-                                    child: Align(
-                                        alignment: AlignmentDirectional.centerStart,
-                                        child: Text("Bara Ali Ahmed",
-                                            style:
-                                            Theme.of(context).textTheme.button))),
-                              ],
-                            )),
-                        PopupMenuButton<String>(
-                            onSelected: (value) {},
-                            itemBuilder: (BuildContext context) =>
-                            <PopupMenuEntry<String>>[
-                              for (var item in ["Delete"])
-                                PopupMenuItem(
-                                  value: item,
-                                  child: Text(
-                                    item,
-                                    style:
-                                    Theme.of(context).textTheme.subtitle2,
-                                  ),
-                                )
+                            BorderRadius.circular(SharedValues.borderRadius),
+                        onTap: () {},
+                        child: Container(
+                          height: 80,
+                          width: double.infinity,
+                          padding: const EdgeInsets.all(SharedValues.padding),
+                          margin: const EdgeInsets.all(SharedValues.padding),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(
+                                  SharedValues.borderRadius),
+                              color: Theme.of(context).primaryColor),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                  child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Expanded(
+                                      child: Align(
+                                          alignment:
+                                              AlignmentDirectional.centerStart,
+                                          child: Text(users[index].name,
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .headline3))),
+                                  Expanded(
+                                      child: Align(
+                                          alignment:
+                                              AlignmentDirectional.centerStart,
+                                          child: Text(users[index].email,
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .button))),
+                                ],
+                              )),
+                              PopupMenuButton<String>(
+                                  onSelected: (value) async {
+                                    if (value == "Disable") {
+                                      users[index].userRole=UserRole.disable;
+                                      await provider
+                                          .changePermission(users[index]);
+                                    } else if (value == "Upgrade To Employee") {
+                                      users[index].userRole=UserRole.employee;
+                                      await provider
+                                          .changePermission(users[index]);
+                                    }
+                                  },
+                                  itemBuilder: (BuildContext context) =>
+                                      <PopupMenuEntry<String>>[
+                                        for (var item in [
+                                          "Disable",
+                                          "Upgrade To Employee"
+                                        ])
+                                          PopupMenuItem(
+                                            value: item,
+                                            child: Text(
+                                              item,
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .subtitle2,
+                                            ),
+                                          )
+                                      ],
+                                  child: Icon(
+                                    Icons.more_vert,
+                                    color:
+                                        Theme.of(context).colorScheme.onPrimary,
+                                  )),
                             ],
-                            child: Icon(
-                              Icons.more_vert,
-                              color: Theme.of(context).colorScheme.onPrimary,
-                            )),
-                      ],
-                    ),
-                  ),
-                ),
-              ))
+                          ),
+                        ),
+                      ),
+                    );
+                  }))
         ],
       ),
     ));

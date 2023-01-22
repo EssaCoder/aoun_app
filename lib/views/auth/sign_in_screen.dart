@@ -1,3 +1,4 @@
+import 'package:aoun/data/network/http_exception.dart';
 import 'package:aoun/data/providers/auth_provider.dart';
 import 'package:aoun/views/shared/assets_variables.dart';
 import 'package:flutter/material.dart';
@@ -94,9 +95,14 @@ class _SignInScreenState extends State<SignInScreen> {
                             MaterialPageRoute(
                                 builder: (context) => const MainScreen()));
                       } else if (result is Error) {
+                        String message = "User ID or password incorrect !!";
+                        if (result.exception is UnauthorisedException) {
+                          message = (result.exception as UnauthorisedException)
+                                  .message ??
+                              "";
+                        }
                         // ignore: use_build_context_synchronously
-                        SharedComponents.showSnackBar(
-                            context, "User ID or password incorrect !!",
+                        SharedComponents.showSnackBar(context, message,
                             backgroundColor:
                                 // ignore: use_build_context_synchronously
                                 Theme.of(context).colorScheme.error);

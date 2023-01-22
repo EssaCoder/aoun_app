@@ -1,3 +1,4 @@
+import 'package:aoun/data/utils/enum.dart';
 import 'package:flutter/material.dart';
 import '/data/network/data_response.dart';
 import '/data/models/user.dart';
@@ -9,13 +10,6 @@ class AuthProvider extends ChangeNotifier {
   User? _user;
   User? get user => _user;
   String? verificationId;
-  Future<Result> signUp(User user) async {
-    Result result = await _authRepository.signUp(user);
-    if (result is Success) {
-      _user = result.value;
-    }
-    return result;
-  }
 
   Future<Result> signIn(int userID, String password) async {
     Result result = await _authRepository.signIn(userID, password);
@@ -57,6 +51,24 @@ class AuthProvider extends ChangeNotifier {
       return Error();
     } catch (e) {
       return Error(e);
+    }
+  }
+  List<User> users = [];
+
+  Future<void> showUsers() async {
+    debugPrint("==========AuthRepository->signUp==========");
+    Result result = await _authRepository.showUsers();
+    if (result is Success) {
+      users = result.value;
+      notifyListeners();
+    }
+  }
+  Future<void> changePermission(User user) async {
+    debugPrint("==========AuthRepository->signUp==========");
+    Result result = await _authRepository.updateUser(user);
+    if (result is Success) {
+      users = result.value;
+      notifyListeners();
     }
   }
 }

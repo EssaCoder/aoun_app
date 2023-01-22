@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:aoun/data/providers/auth_provider.dart';
 import 'package:aoun/data/providers/pilgrims_provider.dart';
+import 'package:aoun/data/utils/enum.dart';
 import 'package:aoun/views/home/main_screen.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -25,7 +26,9 @@ Future<void> main() async {
   final preferences = Preferences.instance;
   String? date = (await preferences.get(PreferenceVariable.user))?.toString();
   User? user = date == null ? null : User.fromJson(jsonDecode(date));
-
+  if(user?.userRole==UserRole.disable){
+    user=null;
+  }
   setup();
   runApp(EasyLocalization(
     fallbackLocale: const Locale('ar', 'SA'),

@@ -1,5 +1,6 @@
 import 'package:aoun/data/models/user.dart';
 import 'package:aoun/data/network/data_response.dart';
+import 'package:aoun/data/network/http_exception.dart';
 import 'package:aoun/data/providers/auth_provider.dart';
 import 'package:aoun/data/utils/enum.dart';
 import 'package:aoun/views/auth/verify_otp.dart';
@@ -187,6 +188,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             name: name.text,
                             email: email.text,
                             phone: phone.text,
+                            userRole: UserRole.disable,
                             identityNumber: identityNumber.text,
                             userType: userType?.text == UserType.user.name
                                 ? UserType.user
@@ -204,9 +206,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               ),
                               (_) => false);
                         } else if (result is Error) {
+                          String message="Error occurred !!";
                           // ignore: use_build_context_synchronously
                           SharedComponents.showSnackBar(
-                              context, "Error occurred !!",
+                              context, message,
                               backgroundColor:
                                   // ignore: use_build_context_synchronously
                                   Theme.of(context).colorScheme.error);
