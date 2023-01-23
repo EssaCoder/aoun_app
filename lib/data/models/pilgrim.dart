@@ -7,6 +7,7 @@ class Pilgrim {
   String healthStatus;
   String healthProblem;
   int userID;
+  DateTime? deleteAt;
 
   Pilgrim(
       {required this.id,
@@ -16,7 +17,8 @@ class Pilgrim {
       required this.supervisorPhone,
       required this.healthStatus,
       required this.healthProblem,
-      required this.userID});
+      required this.userID,
+      this.deleteAt});
 
   factory Pilgrim.fromJson(Map<String, dynamic> json) {
     return Pilgrim(
@@ -28,6 +30,7 @@ class Pilgrim {
       healthStatus: json["healthStatus"],
       healthProblem: json["healthProblem"],
       userID: json["userID"],
+      deleteAt: DateTime.tryParse(json["deleteAt"]??""),
     );
   }
 
@@ -41,6 +44,7 @@ class Pilgrim {
       "healthStatus": healthStatus,
       "healthProblem": healthProblem,
       "userID": userID,
+      "deleteAt": deleteAt?.toIso8601String(),
     };
   }
 //

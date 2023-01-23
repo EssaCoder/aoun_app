@@ -45,6 +45,8 @@ class AuthProvider extends ChangeNotifier {
       debugPrint(
           "===============AuthProvider->verifyCode->smsCode: ${smsCode} ==============");
       Result result = await _authRepository.verifyCode(_user!.phone, smsCode);
+      debugPrint(
+          "===============AuthProvider->verifyCode->result: ${result} ==============");
       if (result is Success) {
         return await _authRepository.signUp(_user!);
       }
@@ -53,22 +55,22 @@ class AuthProvider extends ChangeNotifier {
       return Error(e);
     }
   }
+
   List<User> users = [];
 
   Future<void> showUsers() async {
     debugPrint("==========AuthRepository->signUp==========");
-    Result result = await _authRepository.showUsers();
+    Result result = await _authRepository.showUsers(_user!.id);
     if (result is Success) {
       users = result.value;
+      users.removeWhere((element) => element.id == _user!.id);
       notifyListeners();
     }
   }
-  Future<void> changePermission(User user) async {
+
+  Future<Result> changePermission(User user) async {
     debugPrint("==========AuthRepository->signUp==========");
     Result result = await _authRepository.updateUser(user);
-    if (result is Success) {
-      users = result.value;
-      notifyListeners();
-    }
+    return result;
   }
 }

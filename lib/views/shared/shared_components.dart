@@ -138,7 +138,7 @@ class SharedComponents {
                 builder: (_, snapshot) {
                   if(snapshot.connectionState==ConnectionState.done){
                     WidgetsBinding.instance.addPostFrameCallback((_) {
-                      Navigator.pop(context);
+                      Navigator.pop(context,snapshot.data);
                     });
                   }
                   return SizedBox(

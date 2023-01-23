@@ -1,5 +1,7 @@
 import 'package:aoun/data/models/pilgrim.dart';
+import 'package:aoun/data/network/data_response.dart';
 import 'package:aoun/data/providers/pilgrims_provider.dart';
+import 'package:aoun/views/pilgrims/add_pilgrims.dart';
 import 'package:aoun/views/pilgrims/pilgrim_details.dart';
 import 'package:aoun/views/shared/assets_variables.dart';
 import 'package:aoun/views/shared/button_widget.dart';
@@ -20,6 +22,24 @@ class ViewPilgrims extends StatefulWidget {
 }
 
 class _ViewPilgrimsState extends State<ViewPilgrims> {
+  final searchItems = [
+    DropdownMenuItemModel(text: "My account", id: 0),
+    DropdownMenuItemModel(text: "Name or Number", id: 1),
+  ];
+
+  late TextEditingController searchController;
+  @override
+  void initState() {
+    searchController = TextEditingController();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    searchController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<PilgrimsProvider>(context, listen: false);
@@ -44,12 +64,8 @@ class _ViewPilgrimsState extends State<ViewPilgrims> {
                             hintText: "Filter by",
                             prefixIcon:
                                 const Icon(Icons.keyboard_arrow_down_rounded),
-                            items: [
-                              DropdownMenuItemModel(
-                                  text: "Name or Number", id: 0),
-                              DropdownMenuItemModel(
-                                  text: "Search by Service", id: 1)
-                            ],
+                            value: searchItems.first,
+                            items: searchItems,
                             onChanged: (value) {
                               setStateWidget(() {
                                 searchType = value?.id ?? -1;
@@ -57,26 +73,24 @@ class _ViewPilgrimsState extends State<ViewPilgrims> {
                             },
                             keyDropDown: GlobalKey()),
                         const SizedBox(height: SharedValues.padding),
-                        if (searchType == 0)
+                        if (searchType == 1) ...[
                           TextFieldWidget(
-                              controller: TextEditingController(),
-                              hintText: "Building name"),
-                        if (searchType == 1)
-                          DropdownFieldWidget(
-                              hintText: "Select Service",
-                              prefixIcon:
-                                  const Icon(Icons.keyboard_arrow_down_rounded),
-                              items: [
-                                DropdownMenuItemModel(text: "11", id: 1),
-                                DropdownMenuItemModel(text: "22", id: 2)
-                              ],
-                              onChanged: (value) {},
-                              keyDropDown: GlobalKey()),
-                        const SizedBox(height: SharedValues.padding * 4),
+                              controller: searchController,
+                              hintText: "Pilgrim name/number"),
+                          const SizedBox(height: SharedValues.padding * 4)
+                        ],
                         ButtonWidget(
                           child: Text("Search",
                               style: Theme.of(context).textTheme.button),
-                          onPressed: () async {},
+                          onPressed: () async {
+                            if (searchType == 1) {
+                              provider.searchPilgrims(
+                                  search: searchController.text);
+                            } else {
+                              provider.searchPilgrims(isMyAccount: true);
+                            }
+                            Navigator.pop(ctx);
+                          },
                         )
                       ],
                     );
@@ -105,77 +119,102 @@ class _ViewPilgrimsState extends State<ViewPilgrims> {
                       if (provider.pilgrims.isEmpty) {
                         return SharedComponents.emptyWidget();
                       }
-                      return ListView.builder(
-                        padding: const EdgeInsets.all(SharedValues.padding),
-                        itemCount: provider.pilgrims.length,
-                        itemBuilder: (context, index) => InkWell(
-                          borderRadius:
-                              BorderRadius.circular(SharedValues.borderRadius),
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => PilgrimDetails(
-                                      pilgrim: provider.pilgrims[index]),
-                                ));
-                          },
-                          child: Container(
-                            height: 80,
-                            width: double.infinity,
-                            padding: const EdgeInsets.all(SharedValues.padding),
-                            margin: const EdgeInsets.all(SharedValues.padding),
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(
-                                    SharedValues.borderRadius),
-                                color: Theme.of(context).primaryColor),
-                            child: Row(
-                              children: [
-                                Expanded(
-                                    child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Expanded(
-                                        child: Align(
-                                            alignment: AlignmentDirectional
-                                                .centerStart,
-                                            child: Text(
-                                                provider.pilgrims[index].name,
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .headline3))),
-                                    Expanded(
-                                        child: Align(
-                                            alignment: AlignmentDirectional
-                                                .centerStart,
-                                            child: Text(
-                                                provider.pilgrims[index].phone,
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .button))),
-                                  ],
-                                )),
-                                PopupMenuButton<String>(
-                                    onSelected: (value) {},
-                                    itemBuilder: (BuildContext context) =>
-                                        <PopupMenuEntry<String>>[
-                                          for (var item in ["Delete"])
-                                            PopupMenuItem(
-                                              value: item,
-                                              child: Text(
-                                                item,
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .subtitle2,
-                                              ),
-                                            )
-                                        ],
-                                    child: Icon(
-                                      Icons.more_vert,
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .onPrimary,
-                                    )),
-                              ],
+                      return Selector<PilgrimsProvider, List<Pilgrim>>(
+                        selector: (p0, p1) => p1.pilgrims,
+                        builder: (ctx, pilgrims, child) => ListView.builder(
+                          padding: const EdgeInsets.all(SharedValues.padding),
+                          itemCount: pilgrims.length,
+                          itemBuilder: (context, index) => InkWell(
+                            borderRadius: BorderRadius.circular(
+                                SharedValues.borderRadius),
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => PilgrimDetails(
+                                        pilgrim: pilgrims[index]),
+                                  ));
+                            },
+                            child: Container(
+                              height: 80,
+                              width: double.infinity,
+                              padding:
+                                  const EdgeInsets.all(SharedValues.padding),
+                              margin:
+                                  const EdgeInsets.all(SharedValues.padding),
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(
+                                      SharedValues.borderRadius),
+                                  color: Theme.of(context).primaryColor),
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                      child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Expanded(
+                                          child: Align(
+                                              alignment: AlignmentDirectional
+                                                  .centerStart,
+                                              child: Text(pilgrims[index].name,
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .headline3))),
+                                      Expanded(
+                                          child: Align(
+                                              alignment: AlignmentDirectional
+                                                  .centerStart,
+                                              child: Text(pilgrims[index].phone,
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .button))),
+                                    ],
+                                  )),
+                                  PopupMenuButton<String>(
+                                      onSelected: (value) async {
+                                        if (value == "Delete") {
+                                          pilgrims[index].deleteAt =
+                                              DateTime.now();
+                                         final result=await SharedComponents.showOverlayLoading(context, () async => await provider
+                                              .updatePilgrim(pilgrims[index]));
+                                         if(result is Success){
+                                           // ignore: use_build_context_synchronously
+                                           SharedComponents.showSnackBar(
+                                               context, "Pilgrim deleted");
+                                         }
+                                        } else if (value == "Edit") {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    AddPilgrims(
+                                                        pilgrim:
+                                                            pilgrims[index]),
+                                              ));
+                                        }
+                                      },
+                                      itemBuilder: (BuildContext context) =>
+                                          <PopupMenuEntry<String>>[
+                                            for (var item in ["Delete", "Edit"])
+                                              PopupMenuItem(
+                                                value: item,
+                                                child: Text(
+                                                  item,
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .subtitle2,
+                                                ),
+                                              )
+                                          ],
+                                      child: Icon(
+                                        Icons.more_vert,
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .onPrimary,
+                                      )),
+                                ],
+                              ),
                             ),
                           ),
                         ),

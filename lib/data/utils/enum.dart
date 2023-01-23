@@ -1,2 +1,2 @@
 enum UserType{user,employee}
-enum UserRole{admin,employee,disable}
+enum UserRole{superAdmin,admin,employee,disable}

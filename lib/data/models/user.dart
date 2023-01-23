@@ -25,7 +25,9 @@ class User {
       id: json["id"],
       name: json["name"],
       userRole: () {
-        if (json["roles"] == "admin") {
+        if (json["roles"] == "superAdmin") {
+          return UserRole.superAdmin;
+        } else if (json["roles"] == "admin") {
           return UserRole.admin;
         } else if (json["roles"] == "employee") {
           return UserRole.employee;

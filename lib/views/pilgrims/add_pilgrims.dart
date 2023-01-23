@@ -13,8 +13,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class AddPilgrims extends StatefulWidget {
-  const AddPilgrims({Key? key}) : super(key: key);
-
+  const AddPilgrims({Key? key, this.pilgrim}) : super(key: key);
+  final Pilgrim? pilgrim;
   @override
   State<AddPilgrims> createState() => _AddPilgrimsState();
 }
@@ -27,14 +27,18 @@ class _AddPilgrimsState extends State<AddPilgrims> {
   late TextEditingController supervisorPhone;
   late TextEditingController healthStatus;
   late TextEditingController healthProblem;
+
+  late PilgrimsProvider provider;
   @override
   void initState() {
-    name = TextEditingController();
-    address = TextEditingController();
-    phone = TextEditingController();
-    supervisorPhone = TextEditingController();
-    healthStatus = TextEditingController();
-    healthProblem = TextEditingController();
+    provider = Provider.of<PilgrimsProvider>(context, listen: false);
+    name = TextEditingController(text: widget.pilgrim?.name);
+    address = TextEditingController(text: widget.pilgrim?.address);
+    phone = TextEditingController(text: widget.pilgrim?.phone);
+    supervisorPhone =
+        TextEditingController(text: widget.pilgrim?.supervisorPhone);
+    healthStatus = TextEditingController(text: widget.pilgrim?.healthStatus);
+    healthProblem = TextEditingController(text: widget.pilgrim?.healthProblem);
     super.initState();
   }
 
@@ -150,11 +154,11 @@ class _AddPilgrimsState extends State<AddPilgrims> {
                   child: ButtonWidget(
                     minWidth: double.infinity,
                     onPressed: () async {
-                      final user=Provider.of<AuthProvider>(
-                        context,
-                        listen: false).user;
+                      final user =
+                          Provider.of<AuthProvider>(context, listen: false)
+                              .user;
                       Pilgrim pilgrim = Pilgrim(
-                          id: DateTime.now().millisecondsSinceEpoch,
+                          id: widget.pilgrim?.id??DateTime.now().millisecondsSinceEpoch,
                           name: name.text,
                           address: address.text,
                           phone: phone.text,
@@ -162,23 +166,29 @@ class _AddPilgrimsState extends State<AddPilgrims> {
                           healthStatus: healthStatus.text,
                           healthProblem: healthProblem.text,
                           userID: user!.id);
-                      Result result = await Provider.of<PilgrimsProvider>(
-                              context,
-                              listen: false)
-                          .setPilgrim(pilgrim);
+                      Result result;
+                      if (widget.pilgrim == null) {
+                        result = await provider.setPilgrim(pilgrim);
+                      } else {
+                        result = await provider.updatePilgrim(pilgrim);
+                      }
                       if (result is Success) {
                         // ignore: use_build_context_synchronously
                         SharedComponents.showSnackBar(
-                            context, "Pilgrim added Success");
+                            context, widget.pilgrim == null?"Pilgrim added success":"Pilgrim edit success");
                       } else {
                         // ignore: use_build_context_synchronously
                         SharedComponents.showSnackBar(
                             // ignore: use_build_context_synchronously
-                            context, "Error occurred !!",backgroundColor: Theme.of(context).colorScheme.error);
+                            context,
+                            "Error occurred !!",
+                            backgroundColor:
+                                // ignore: use_build_context_synchronously
+                                Theme.of(context).colorScheme.error);
                       }
                     },
                     child: Text(
-                      "Create",
+                      widget.pilgrim == null ? "Create" : "Edit",
                       style: Theme.of(context).textTheme.button,
                     ),
                   ),

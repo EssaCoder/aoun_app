@@ -1,4 +1,5 @@
 import 'package:aoun/data/models/user.dart';
+import 'package:aoun/data/network/data_response.dart';
 import 'package:aoun/data/providers/auth_provider.dart';
 import 'package:aoun/data/utils/enum.dart';
 import 'package:aoun/views/shared/shared_components.dart';
@@ -41,7 +42,7 @@ class _UsersScreenState extends State<UsersScreen> {
                     return ListView.builder(
                       padding: const EdgeInsets.all(SharedValues.padding),
                       itemCount: users.length,
-                      itemBuilder: (context, index) => InkWell(
+                      itemBuilder: (ctx, index) => InkWell(
                         borderRadius:
                             BorderRadius.circular(SharedValues.borderRadius),
                         onTap: () {},
@@ -81,13 +82,39 @@ class _UsersScreenState extends State<UsersScreen> {
                               PopupMenuButton<String>(
                                   onSelected: (value) async {
                                     if (value == "Disable") {
-                                      users[index].userRole=UserRole.disable;
-                                      await provider
-                                          .changePermission(users[index]);
+                                      users[index].userRole = UserRole.disable;
+                                      final result = await SharedComponents
+                                          .showOverlayLoading(
+                                          context,
+                                              () async => await provider
+                                              .changePermission(
+                                              users[index]));
+                                      if (result is Success) {
+                                        // ignore: use_build_context_synchronously
+                                        SharedComponents.showSnackBar(
+                                            context, "User Disable");
+                                      } else {
+                                        // ignore: use_build_context_synchronously
+                                        SharedComponents.showSnackBar(context,
+                                            "Error occurred during operation");
+                                      }
                                     } else if (value == "Upgrade To Employee") {
-                                      users[index].userRole=UserRole.employee;
-                                      await provider
-                                          .changePermission(users[index]);
+                                      users[index].userRole = UserRole.employee;
+                                      final result = await SharedComponents
+                                          .showOverlayLoading(
+                                              context,
+                                              () async => await provider
+                                                  .changePermission(
+                                                      users[index]));
+                                      if (result is Success) {
+                                        // ignore: use_build_context_synchronously
+                                        SharedComponents.showSnackBar(context,
+                                            "Success upgrade employee");
+                                      } else {
+                                        // ignore: use_build_context_synchronously
+                                        SharedComponents.showSnackBar(context,
+                                            "Error occurred during operation");
+                                      }
                                     }
                                   },
                                   itemBuilder: (BuildContext context) =>

@@ -84,10 +84,12 @@ class AuthApi {
       rethrow;
     }
   }
-  Future<List<QueryDocumentSnapshot<Map<String, dynamic>>>> showUsers() async {
+  Future<List<QueryDocumentSnapshot<Map<String, dynamic>>>> showUsers(int id) async {
     try {
       final response = await _fireStore
-          .collection(Endpoints.users).get();
+          .collection(Endpoints.users)
+          .where("roles",isNotEqualTo: "superAdmin")
+          .get();
       return response.docs;
     } catch (e) {
       rethrow;

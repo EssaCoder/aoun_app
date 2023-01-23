@@ -78,11 +78,11 @@ class AuthRepository {
     }
   }
 
-  Future<Result> showUsers() async {
+  Future<Result> showUsers(int id) async {
     try {
       debugPrint(
           "==========AuthRepository->signUp==========");
-      final response = await _authApi.showUsers();
+      final response = await _authApi.showUsers(id);
       final users = response.map((e) => User.fromJson(e.data())).toList();
 
       return Success(users);
@@ -93,7 +93,6 @@ class AuthRepository {
   Future<Result> updateUser(User user) async {
     try{
       return Success(await _authApi.updateUser(user.id.toString(),user.toJson()));
-
     }catch (e){
       return Error(e);
     }

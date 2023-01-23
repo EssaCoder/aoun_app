@@ -1,3 +1,4 @@
+import 'package:aoun/data/utils/extension.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'constants/endpoint.dart';
 
@@ -17,6 +18,7 @@ class PilgrimsApi {
     try {
       final response=  await _fireStore
           .collection(Endpoints.pilgrims)
+      .where("deleteAt",isNull:  true)
           .get();
       return response.docs;
     } catch (e) {
@@ -30,6 +32,19 @@ class PilgrimsApi {
       .where("id",isEqualTo: id)
           .get();
       return response.docs.first;
+    } catch (e) {
+      rethrow;
+    }
+  }
+  Future<bool> updatePilgrim(int id,Map<String, dynamic> body) async {
+    try {
+      final response=  await _fireStore
+          .collection(Endpoints.pilgrims)
+          .where("id", isEqualTo: id)
+          .get();
+      await _fireStore
+          .collection(Endpoints.pilgrims).doc(response.docs.firstOrNull?.id).update(body);
+      return true;
     } catch (e) {
       rethrow;
     }

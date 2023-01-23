@@ -36,4 +36,11 @@ class PilgrimsRepository {
       return Error(e);
     }
   }
+  Future<Result> updatePilgrim(Pilgrim pilgrim) async {
+    try {
+      return Success(await _pilgrimsApi.updatePilgrim(pilgrim.id,pilgrim.toJson()));
+    } catch (e) {
+      return Error(e);
+    }
+  }
 }
