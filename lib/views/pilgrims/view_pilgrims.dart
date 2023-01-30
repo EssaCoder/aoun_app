@@ -1,6 +1,7 @@
 import 'package:aoun/data/models/pilgrim.dart';
 import 'package:aoun/data/network/data_response.dart';
 import 'package:aoun/data/providers/pilgrims_provider.dart';
+import 'package:aoun/data/utils/enum.dart';
 import 'package:aoun/views/pilgrims/add_pilgrims.dart';
 import 'package:aoun/views/pilgrims/pilgrim_details.dart';
 import 'package:aoun/views/shared/assets_variables.dart';
@@ -183,7 +184,8 @@ class _ViewPilgrimsState extends State<ViewPilgrims> {
                                            SharedComponents.showSnackBar(
                                                context, "Pilgrim deleted");
                                          }
-                                        } else if (value == "Edit") {
+                                        }
+                                        else if (value == "Edit") {
                                           Navigator.push(
                                               context,
                                               MaterialPageRoute(
@@ -193,10 +195,21 @@ class _ViewPilgrimsState extends State<ViewPilgrims> {
                                                             pilgrims[index]),
                                               ));
                                         }
+                                        else if (value=="Missing"){
+                                          pilgrims[index].status=PilgrimStatus.missing;
+                                          SharedComponents.showOverlayLoading(context, ()async{
+                                            await provider.updatePilgrim(pilgrims[index]);
+                                          });
+                                        }  else if (value=="Not Missing"){
+                                          pilgrims[index].status=PilgrimStatus.none;
+                                          SharedComponents.showOverlayLoading(context, ()async{
+                                            await provider.updatePilgrim(pilgrims[index]);
+                                          });
+                                        }
                                       },
                                       itemBuilder: (BuildContext context) =>
                                           <PopupMenuEntry<String>>[
-                                            for (var item in ["Delete", "Edit"])
+                                            for (var item in ["Delete", "Edit",pilgrims[index].status==PilgrimStatus.missing?"Not Missing":"Missing"])
                                               PopupMenuItem(
                                                 value: item,
                                                 child: Text(

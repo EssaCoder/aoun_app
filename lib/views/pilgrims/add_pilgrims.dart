@@ -1,7 +1,12 @@
+import 'dart:io';
+
 import 'package:aoun/data/models/pilgrim.dart';
 import 'package:aoun/data/network/data_response.dart';
 import 'package:aoun/data/providers/auth_provider.dart';
 import 'package:aoun/data/providers/pilgrims_provider.dart';
+import 'package:aoun/data/utils/enum.dart';
+import 'package:aoun/views/shared/image_network.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 import '/views/shared/assets_variables.dart';
@@ -27,6 +32,7 @@ class _AddPilgrimsState extends State<AddPilgrims> {
   late TextEditingController supervisorPhone;
   late TextEditingController healthStatus;
   late TextEditingController healthProblem;
+  XFile? image;
 
   late PilgrimsProvider provider;
   @override
@@ -67,11 +73,68 @@ class _AddPilgrimsState extends State<AddPilgrims> {
             child: ListView(
               children: [
                 const SizedBox(height: SharedValues.padding * 3),
-                SizedBox(
-                  width: 100,
-                  height: 100,
-                  child: SvgPicture.asset(AssetsVariable.addDocument,
-                      fit: BoxFit.scaleDown),
+                Align(
+                  alignment: Alignment.center,
+                  child: Container(
+                    height: 115,
+                    width: 115,
+                    decoration: BoxDecoration(
+                        border: Border.all(
+                            color: Theme.of(context).colorScheme.primary,
+                            width: 2),
+                        shape: BoxShape.circle),
+                    child: Stack(
+                      alignment: AlignmentDirectional.bottomEnd,
+                      children: [
+                        ClipOval(
+                          child: Builder(builder: (context) {
+                            if (image != null) {
+                              return Image.file(
+                                File(image!.path),
+                                fit: BoxFit.fill,
+                                width: double.infinity,
+                                height: double.infinity,
+                              );
+                            } else if (widget.pilgrim?.url != null) {
+                              return ImageNetwork(url: widget.pilgrim!.url!,
+                                  fit: BoxFit.fill,
+                                  width: double.infinity,
+                                  height: double.infinity);
+                            }
+                            return Center(
+                              child: IconButton(
+                                padding: EdgeInsets.zero,
+                                onPressed: () async {
+                                  final ImagePicker picker = ImagePicker();
+                                  image = await picker.pickImage(
+                                      source: ImageSource.gallery,
+                                      imageQuality: 80);
+                                  setState(() {});
+                                },
+                                icon: Icon(
+                                  Icons.image,
+                                  color: Theme.of(context).primaryColor,
+                                  size: 50,
+                                ),
+                              ),
+                            );
+                          }),
+                        ),
+                        if (image != null)
+                          IconButton(
+                            onPressed: () async {
+                              image = null;
+                              setState(() {});
+                            },
+                            icon: Icon(
+                              Icons.delete,
+                              color: Theme.of(context).colorScheme.error,
+                              size: 40,
+                            ),
+                          ),
+                      ],
+                    ),
+                  ),
                 ),
                 const SizedBox(height: SharedValues.padding * 2),
                 Padding(
@@ -140,7 +203,6 @@ class _AddPilgrimsState extends State<AddPilgrims> {
                     controller: healthProblem,
                     hintText: "Health Problem",
                     textInputAction: TextInputAction.none,
-                    obscureText: true,
                     validator: (value) {
                       if (value != null && value.isNotEmpty) {
                         return null;
@@ -158,10 +220,13 @@ class _AddPilgrimsState extends State<AddPilgrims> {
                           Provider.of<AuthProvider>(context, listen: false)
                               .user;
                       Pilgrim pilgrim = Pilgrim(
-                          id: widget.pilgrim?.id??DateTime.now().millisecondsSinceEpoch,
+                          id: widget.pilgrim?.id ??
+                              DateTime.now().millisecondsSinceEpoch,
                           name: name.text,
+                          url: image?.path,
                           address: address.text,
                           phone: phone.text,
+                          status: PilgrimStatus.none,
                           supervisorPhone: supervisorPhone.text,
                           healthStatus: healthStatus.text,
                           healthProblem: healthProblem.text,
@@ -175,7 +240,10 @@ class _AddPilgrimsState extends State<AddPilgrims> {
                       if (result is Success) {
                         // ignore: use_build_context_synchronously
                         SharedComponents.showSnackBar(
-                            context, widget.pilgrim == null?"Pilgrim added success":"Pilgrim edit success");
+                            context,
+                            widget.pilgrim == null
+                                ? "Pilgrim added success"
+                                : "Pilgrim edit success");
                       } else {
                         // ignore: use_build_context_synchronously
                         SharedComponents.showSnackBar(

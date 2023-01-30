@@ -1,2 +1,2 @@
-enum UserType{user,employee}
-enum UserRole{superAdmin,admin,employee,disable}
+enum UserRole{superAdmin,employee,user,disable}
+enum PilgrimStatus{none,missing}

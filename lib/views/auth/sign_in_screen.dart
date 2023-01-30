@@ -20,20 +20,20 @@ class SignInScreen extends StatefulWidget {
 }
 
 class _SignInScreenState extends State<SignInScreen> {
-  late TextEditingController userID;
+  late TextEditingController phone;
   late TextEditingController password;
   final _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
-    userID = TextEditingController();
+    phone = TextEditingController();
     password = TextEditingController();
     super.initState();
   }
 
   @override
   void dispose() {
-    userID.dispose();
+    phone.dispose();
     password.dispose();
     super.dispose();
   }
@@ -60,9 +60,9 @@ class _SignInScreenState extends State<SignInScreen> {
                 Padding(
                   padding: const EdgeInsets.all(SharedValues.padding),
                   child: TextFieldWidget(
-                      controller: userID,
+                      controller: phone,
                       keyboardType: TextInputType.number,
-                      hintText: "User Id"),
+                      hintText: "Phone Number"),
                 ),
                 Padding(
                   padding: const EdgeInsets.all(SharedValues.padding),
@@ -86,7 +86,7 @@ class _SignInScreenState extends State<SignInScreen> {
                     onPressed: () async {
                       Result result = await Provider.of<AuthProvider>(context,
                               listen: false)
-                          .signIn(int.parse(userID.text), password.text);
+                          .signIn(phone.text, password.text);
 
                       if (result is Success) {
                         // ignore: use_build_context_synchronously

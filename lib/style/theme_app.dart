@@ -26,6 +26,10 @@ class ThemeApp {
             borderRadius: BorderRadius.circular(SharedValues.borderRadius),
             borderSide: const BorderSide(color: Color(0xFF4AB3A9), width: 1.5)
         ),
+        border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(SharedValues.borderRadius),
+            borderSide: const BorderSide(color: Color(0xFF4AB3A9), width: 1.5)
+        ),
         focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(SharedValues.borderRadius),
             borderSide: const BorderSide(color: Color(0xFF4AB3A9),width: 1.5)),

@@ -60,11 +60,11 @@ class AuthApi {
   }
 
   Future<QueryDocumentSnapshot<Map<String, dynamic>>> getUser(
-      int userID, String password) async {
+      String phone, String password) async {
     try {
       final response = await _fireStore
           .collection(Endpoints.users)
-          .where("id", isEqualTo: userID)
+          .where("phone", isEqualTo: phone)
           .where("password", isEqualTo: password)
           .get();
       return response.docs.first;

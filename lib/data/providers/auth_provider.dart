@@ -1,4 +1,6 @@
+import 'package:aoun/data/network/http_exception.dart';
 import 'package:aoun/data/utils/enum.dart';
+import 'package:aoun/data/utils/utils.dart';
 import 'package:flutter/material.dart';
 import '/data/network/data_response.dart';
 import '/data/models/user.dart';
@@ -11,8 +13,8 @@ class AuthProvider extends ChangeNotifier {
   User? get user => _user;
   String? verificationId;
 
-  Future<Result> signIn(int userID, String password) async {
-    Result result = await _authRepository.signIn(userID, password);
+  Future<Result> signIn(String phone, String password) async {
+    Result result = await _authRepository.signIn(phone, password);
     if (result is Success) {
       _user = result.value;
     }
@@ -72,5 +74,15 @@ class AuthProvider extends ChangeNotifier {
     debugPrint("==========AuthRepository->signUp==========");
     Result result = await _authRepository.updateUser(user);
     return result;
+  }
+  Future<void> getUserData() async {
+    Result result = await _authRepository.getUserData(
+        _user?.phone ?? "", _user?.password ?? "");
+    if (result is Success) {
+      _user = result.value;
+    }else if(result is Error&&result.exception is UnauthorisedException){
+      Utils.logOut();
+    }
+    notifyListeners();
   }
 }

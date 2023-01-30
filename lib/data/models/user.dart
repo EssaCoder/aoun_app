@@ -6,7 +6,6 @@ class User {
   String email;
   String phone;
   String identityNumber;
-  UserType userType;
   String password;
   UserRole userRole;
 
@@ -16,7 +15,6 @@ class User {
       required this.email,
       required this.phone,
       required this.identityNumber,
-      required this.userType,
       required this.userRole,
       required this.password});
 
@@ -25,20 +23,18 @@ class User {
       id: json["id"],
       name: json["name"],
       userRole: () {
-        if (json["roles"] == "superAdmin") {
+        if (json["roles"] ==UserRole.superAdmin.name) {
           return UserRole.superAdmin;
-        } else if (json["roles"] == "admin") {
-          return UserRole.admin;
-        } else if (json["roles"] == "employee") {
+        } else if (json["roles"] == UserRole.employee.name) {
           return UserRole.employee;
+        } else if (json["roles"] == UserRole.user.name) {
+          return UserRole.user;
         }
-
         return UserRole.disable;
       }(),
       email: json["email"],
       phone: json["phone"],
       identityNumber: json["identityNumber"],
-      userType: json["userType"] == "user" ? UserType.user : UserType.employee,
       password: json["password"],
     );
   }
@@ -50,7 +46,6 @@ class User {
       "email": email,
       "phone": phone,
       "identityNumber": identityNumber,
-      "userType": userType.name,
       "password": password,
       "roles": userRole.name
     };

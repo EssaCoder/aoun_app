@@ -1,8 +1,12 @@
+import 'package:aoun/data/providers/auth_provider.dart';
+import 'package:aoun/data/providers/pilgrims_provider.dart';
 import 'package:aoun/views/home/home_page.dart';
 import 'package:aoun/views/home/profile_page.dart';
 import 'package:aoun/views/home/read_qr_page.dart';
+import 'package:aoun/views/shared/shared_components.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:provider/provider.dart';
 import '/views/shared/assets_variables.dart';
 
 class MainScreen extends StatefulWidget {
@@ -18,6 +22,13 @@ class _MainScreenState extends State<MainScreen> {
   @override
   void initState() {
     controller = PageController();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      SharedComponents.showOverlayLoading(context, ()async{
+        // await Provider.of<AuthProvider>(context,listen: false).getUserData();
+        // ignore: use_build_context_synchronously
+        await Provider.of<PilgrimsProvider>(context,listen: false).getAds();
+      });
+    });
     super.initState();
   }
 

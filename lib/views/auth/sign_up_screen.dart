@@ -1,8 +1,8 @@
 import 'package:aoun/data/models/user.dart';
 import 'package:aoun/data/network/data_response.dart';
-import 'package:aoun/data/network/http_exception.dart';
 import 'package:aoun/data/providers/auth_provider.dart';
 import 'package:aoun/data/utils/enum.dart';
+import 'package:aoun/data/utils/utils.dart';
 import 'package:aoun/views/auth/verify_otp.dart';
 import 'package:aoun/views/shared/dropdown_field_widget.dart';
 import 'package:flutter/material.dart';
@@ -16,8 +16,8 @@ import '/views/shared/shared_values.dart';
 import '/views/shared/text_field_widget.dart';
 
 class SignUpScreen extends StatefulWidget {
-  const SignUpScreen({Key? key}) : super(key: key);
-
+  const SignUpScreen({Key? key, this.user}) : super(key: key);
+final User? user;
   @override
   State<SignUpScreen> createState() => _SignUpScreenState();
 }
@@ -27,16 +27,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
   late TextEditingController phone;
   late TextEditingController identityNumber;
   late TextEditingController email;
-  DropdownMenuItemModel? userType;
+  DropdownMenuItemModel? userRole;
   late TextEditingController password;
   late TextEditingController confirmPassword;
   final _formKey = GlobalKey<FormState>();
   @override
   void initState() {
-    name = TextEditingController();
-    phone = TextEditingController();
-    identityNumber = TextEditingController();
-    email = TextEditingController();
+    name = TextEditingController(text: widget.user?.name);
+    phone = TextEditingController(text: widget.user?.phone);
+    identityNumber = TextEditingController(text: widget.user?.identityNumber);
+    email = TextEditingController(text: widget.user?.email);
+    userRole=DropdownMenuItemModel(text: widget.user?.userRole.name??"");
     password = TextEditingController();
     confirmPassword = TextEditingController();
     super.initState();
@@ -48,16 +49,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
     phone.dispose();
     identityNumber.dispose();
     email.dispose();
-    userType = null;
+    userRole = null;
     password.dispose();
     confirmPassword.dispose();
     super.dispose();
   }
-
-  final _userTypes = [
-    DropdownMenuItemModel(id: 1, text: "User"),
-    DropdownMenuItemModel(id: 2, text: "Employee"),
-  ];
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -121,29 +117,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       controller: email,
                       hintText: "Email",
                       validator: (value) {
-                        if (value != null && value.isNotEmpty) {
-                          return null;
+                        if (value == null) {
+                          return "هذا الحقل مطلوب";
+                        } else if (!Utils.validateEmail(value)) {
+                          return "ايميل غير صالح";
                         }
-                        return "This field is required";
-                      }),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(SharedValues.padding),
-                  child: DropdownFieldWidget(
-                    keyDropDown: GlobalKey(),
-                    value: _userTypes.first,
-                    items: _userTypes,
-                    hintText: "User Type",
-                    validator: (value) {
-                      if (value != null) {
                         return null;
-                      }
-                      return "This field is required";
-                    },
-                    onChanged: (value) {
-                      userType = value;
-                    },
-                  ),
+                      }),
                 ),
                 Padding(
                   padding: const EdgeInsets.all(SharedValues.padding),
@@ -188,11 +168,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             name: name.text,
                             email: email.text,
                             phone: phone.text,
-                            userRole: UserRole.disable,
+                            userRole: UserRole.user,
                             identityNumber: identityNumber.text,
-                            userType: userType?.text == UserType.user.name
-                                ? UserType.user
-                                : UserType.employee,
                             password: password.text);
                         Result result = await Provider.of<AuthProvider>(context,
                                 listen: false)

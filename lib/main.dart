@@ -4,6 +4,7 @@ import 'package:aoun/data/providers/auth_provider.dart';
 import 'package:aoun/data/providers/pilgrims_provider.dart';
 import 'package:aoun/data/utils/enum.dart';
 import 'package:aoun/views/home/main_screen.dart';
+import 'package:aoun/views/shared/shared_values.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -40,31 +41,41 @@ Future<void> main() async {
   ));
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key, this.user});
   final User? user;
-  // This widget is the root of your application.
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+class _MyAppState extends State<MyApp> {
+
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => AppStateManager()),
-        ChangeNotifierProvider(create: (_) => AuthProvider()..setUser(user)),
+        ChangeNotifierProvider(create: (_) => AuthProvider()..setUser(widget.user)),
         ChangeNotifierProxyProvider<AuthProvider, PilgrimsProvider>(
             create: (context) => PilgrimsProvider(
                 Provider.of<AuthProvider>(context, listen: false).user),
             update: (context, auth, _) => PilgrimsProvider(auth.user)),],
       child: MaterialApp(
         title: 'Flutter Demo',
+        navigatorKey: navigatorKey,
         localizationsDelegates: context.localizationDelegates,
         supportedLocales: context.supportedLocales,
         locale: context.locale,
         debugShowCheckedModeBanner: false,
         theme: ThemeApp.light,
         // home: const TestScreen(),
-        home: user == null ? const AuthScreen() : const MainScreen(),
-        // home: const MainScreen(),
-        // home: const VerifyOTP(),
+        home: widget.user == null ? const AuthScreen() : const MainScreen(),
+        routes: {
+          SharedValues.loginRoute: (BuildContext context) =>
+          const AuthScreen(),
+        },
       ),
     );
   }

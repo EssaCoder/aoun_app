@@ -28,11 +28,9 @@ class AuthRepository {
     }
   }
 
-  Future<Result> signIn(int userID, String password) async {
+  Future<Result> signIn(String phone, String password) async {
     try {
-      debugPrint(
-          "==========AuthRepository->signIn->studentNumber/password:$userID / $password ==========");
-      final response = await _authApi.getUser(userID, password);
+      final response = await _authApi.getUser(phone, password);
       final data = {
         ...response.data(),
       };
@@ -94,6 +92,13 @@ class AuthRepository {
     try{
       return Success(await _authApi.updateUser(user.id.toString(),user.toJson()));
     }catch (e){
+      return Error(e);
+    }
+  }
+  Future<Result> getUserData(String phone, String password) async {
+    try {
+      return await signIn(phone, password);
+    } catch (e) {
       return Error(e);
     }
   }

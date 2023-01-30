@@ -10,6 +10,7 @@ class PilgrimsProvider extends ChangeNotifier {
   final _pilgrimsRepository = getIt.get<PilgrimsRepository>();
   PilgrimsProvider(this._user);
   final User? _user;
+  List<Pilgrim?> adsPilgrims = [null];
   List<Pilgrim> _pilgrims = [];
   List<Pilgrim> pilgrims = [];
   Future<Result> setPilgrim(Pilgrim pilgrim) async {
@@ -66,14 +67,18 @@ class PilgrimsProvider extends ChangeNotifier {
   }
 
   Future<Result> updatePilgrim(Pilgrim pilgrim) async {
-    try {
-      Result result= await _pilgrimsRepository.updatePilgrim(pilgrim);
-      if(result is Success){
-        await getPilgrims();
-      }
-      return result;
-    } catch (e) {
-      return Error(e);
+    Result result= await _pilgrimsRepository.updatePilgrim(pilgrim);
+    if(result is Success){
+      await getPilgrims();
+      await getAds();
     }
+    return result;
+  }
+  Future<void> getAds() async {
+      Result result= await _pilgrimsRepository.getAds();
+      if(result is Success&&result.value is List<Pilgrim>&&(result.value as List).isNotEmpty){
+        adsPilgrims=result.value;
+        notifyListeners();
+      }
   }
 }
