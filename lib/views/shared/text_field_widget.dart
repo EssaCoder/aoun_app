@@ -62,7 +62,7 @@ class TextFieldWidget extends StatelessWidget {
           style: Theme.of(context).textTheme.subtitle1,
           decoration: InputDecoration(
               contentPadding:
-              Theme.of(context).inputDecorationTheme.contentPadding),
+              Theme.of(context).inputDecorationTheme.contentPadding,prefixIcon: prefixIcon),
         ),
       ],
     );

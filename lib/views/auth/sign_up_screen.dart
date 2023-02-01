@@ -93,6 +93,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   child: TextFieldWidget(
                       controller: phone,
                       hintText: "Phone",
+                      prefixIcon: SizedBox(width:50,child: Center(child: Text("+966"))),
                       validator: (value) {
                         if (value != null && value.isNotEmpty) {
                           return null;
@@ -168,7 +169,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             id: DateTime.now().millisecondsSinceEpoch,
                             name: name.text,
                             email: email.text,
-                            phone: phone.text,
+                            phone: "+966${phone.text}",
                             userRole: UserRole.user,
                             identityNumber: identityNumber.text,
                             password: password.text);
