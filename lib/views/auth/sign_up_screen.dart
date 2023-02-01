@@ -1,5 +1,6 @@
 import 'package:aoun/data/models/user.dart';
 import 'package:aoun/data/network/data_response.dart';
+import 'package:aoun/data/network/http_exception.dart';
 import 'package:aoun/data/providers/auth_provider.dart';
 import 'package:aoun/data/utils/enum.dart';
 import 'package:aoun/data/utils/utils.dart';
@@ -182,6 +183,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 builder: (context) => const VerifyOTP(),
                               ),
                               (_) => false);
+                        }else if (result is Error&&result.exception is ExistUserException) {
+                          String message="User exist please sign in.";
+                          // ignore: use_build_context_synchronously
+                          SharedComponents.showSnackBar(
+                              context, message,
+                              backgroundColor:
+                              // ignore: use_build_context_synchronously
+                              Theme.of(context).colorScheme.error);
                         } else if (result is Error) {
                           String message="Error occurred !!";
                           // ignore: use_build_context_synchronously

@@ -8,7 +8,7 @@ class AuthApi {
   final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
   final _twilioPhoneVerify = TwilioPhoneVerify(
       accountSid: 'AC21ec03a85b5e447bd560f19f932f0005',
-      authToken: '46bd25b7b96677232bf4771fc0d3653b',
+      authToken: 'faa6aac5b13a9d7c6962562153dab347',
       serviceSid: 'VA7534bdacc6f2c1f33c93842b6dee6811');
   Future<String?> setUser(Map<String, dynamic> body) async {
     try {
@@ -26,7 +26,6 @@ class AuthApi {
 
   Future<bool> sendCode(String phone) async {
     try {
-        return true;
       debugPrint("=============AuthApi->sendCode =============");
       TwilioResponse twilioResponse =
           await _twilioPhoneVerify.sendSmsCode(phone);
@@ -44,7 +43,6 @@ class AuthApi {
 
   Future<bool> verifyCode(String phone, String smsCode) async {
     try {
-        return true;
       var twilioResponse =
           await _twilioPhoneVerify.verifySmsCode(phone: phone, code: smsCode);
 

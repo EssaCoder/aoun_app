@@ -59,8 +59,14 @@ class AuthRepository {
 
   Future<Result> sendCode(String phone) async {
     try {
-      bool status = await _authApi.sendCode(phone);
-      return Success(status);
+
+      if ((await _authApi.checkUser(phone))?.data() == null) {
+        bool status = await _authApi.sendCode(phone);
+        return Success(status);
+      }
+      else{
+        return Error(ExistUserException());
+      }
     } catch (e) {
       return Error(e);
     }
