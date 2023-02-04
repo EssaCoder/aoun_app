@@ -69,14 +69,14 @@ class _SignInScreenState extends State<SignInScreen> {
                   child: TextFieldWidget(
                       controller: password, hintText: "Password"),
                 ),
-                Align(
-                  alignment: AlignmentDirectional.centerStart,
-                  child: TextButton(
-                    onPressed: () {},
-                    child: Text("Forget password?",
-                        style: Theme.of(context).textTheme.headline5),
-                  ),
-                ),
+                // Align(
+                //   alignment: AlignmentDirectional.centerStart,
+                //   child: TextButton(
+                //     onPressed: () {},
+                //     child: Text("Forget password?",
+                //         style: Theme.of(context).textTheme.headline5),
+                //   ),
+                // ),
                 const SizedBox(height: SharedValues.padding),
                 Padding(
                   padding: const EdgeInsets.symmetric(
