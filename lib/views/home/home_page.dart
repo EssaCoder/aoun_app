@@ -9,7 +9,6 @@ import 'package:aoun/views/pilgrims/view_pilgrims.dart';
 import 'package:aoun/views/shared/image_network.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import '/views/shared/assets_variables.dart';

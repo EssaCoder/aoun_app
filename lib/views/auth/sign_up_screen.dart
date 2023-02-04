@@ -18,7 +18,7 @@ import '/views/shared/text_field_widget.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({Key? key, this.user}) : super(key: key);
-final User? user;
+  final User? user;
   @override
   State<SignUpScreen> createState() => _SignUpScreenState();
 }
@@ -38,7 +38,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     phone = TextEditingController(text: widget.user?.phone);
     identityNumber = TextEditingController(text: widget.user?.identityNumber);
     email = TextEditingController(text: widget.user?.email);
-    userRole=DropdownMenuItemModel(text: widget.user?.userRole.name??"");
+    userRole = DropdownMenuItemModel(text: widget.user?.userRole.name ?? "");
     password = TextEditingController();
     confirmPassword = TextEditingController();
     super.initState();
@@ -55,6 +55,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     confirmPassword.dispose();
     super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -93,7 +94,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   child: TextFieldWidget(
                       controller: phone,
                       hintText: "Phone",
-                      prefixIcon: SizedBox(width:50,child: Center(child: Text("+966"))),
+                      prefixIcon: const SizedBox(
+                          width: 50, child: Center(child: Text("+966"))),
                       validator: (value) {
                         if (value != null && value.isNotEmpty) {
                           return null;
@@ -184,19 +186,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 builder: (context) => const VerifyOTP(),
                               ),
                               (_) => false);
-                        }else if (result is Error&&result.exception is ExistUserException) {
-                          String message="User exist please sign in.";
+                        } else if (result is Error &&
+                            result.exception is ExistUserException) {
+                          String message = "User exist please sign in.";
                           // ignore: use_build_context_synchronously
-                          SharedComponents.showSnackBar(
-                              context, message,
+                          SharedComponents.showSnackBar(context, message,
                               backgroundColor:
-                              // ignore: use_build_context_synchronously
-                              Theme.of(context).colorScheme.error);
+                                  // ignore: use_build_context_synchronously
+                                  Theme.of(context).colorScheme.error);
                         } else if (result is Error) {
-                          String message="Error occurred !!";
+                          String message = "Error occurred !!";
                           // ignore: use_build_context_synchronously
-                          SharedComponents.showSnackBar(
-                              context, message,
+                          SharedComponents.showSnackBar(context, message,
                               backgroundColor:
                                   // ignore: use_build_context_synchronously
                                   Theme.of(context).colorScheme.error);

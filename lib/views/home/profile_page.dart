@@ -52,7 +52,7 @@ class _ProfilePageState extends State<ProfilePage> {
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
-                "Bara Ali Ahmed",
+                provider.user!.name,
                 style: Theme.of(context).textTheme.headline3,
               ),
               IconButton(onPressed: () {
