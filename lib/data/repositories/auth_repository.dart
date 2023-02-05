@@ -35,7 +35,7 @@ class AuthRepository {
         ...response.data(),
       };
       final user = User.fromJson(data);
-      if (user.userRole==UserRole.disable) {
+      if (user.userRole == UserRole.disable) {
         return Error(UnauthorisedException(
             "You don't have permission to access on this user"));
       }
@@ -57,14 +57,16 @@ class AuthRepository {
     }
   }
 
-  Future<Result> sendCode(String phone) async {
+  Future<Result> sendCode(String phone, bool sendIfExist) async {
     try {
-
-      if ((await _authApi.checkUser(phone))?.data() == null) {
+      final isExist=(await _authApi.checkUser(phone))?.data() != null;
+      if(sendIfExist&&isExist){
         bool status = await _authApi.sendCode(phone);
         return Success(status);
-      }
-      else{
+      }else if(!sendIfExist&&!isExist){
+        bool status = await _authApi.sendCode(phone);
+        return Success(status);
+      }else {
         return Error(ExistUserException());
       }
     } catch (e) {
@@ -84,8 +86,7 @@ class AuthRepository {
 
   Future<Result> showUsers(int id) async {
     try {
-      debugPrint(
-          "==========AuthRepository->signUp==========");
+      debugPrint("==========AuthRepository->signUp==========");
       final response = await _authApi.showUsers(id);
       final users = response.map((e) => User.fromJson(e.data())).toList();
 
@@ -94,18 +95,29 @@ class AuthRepository {
       return Error(e);
     }
   }
+
   Future<Result> updateUser(User user) async {
-    try{
-      return Success(await _authApi.updateUser(user.id.toString(),user.toJson()));
-    }catch (e){
+    try {
+      return Success(
+          await _authApi.updateUser(user.id.toString(), user.toJson()));
+    } catch (e) {
       return Error(e);
     }
   }
+
   Future<Result> getUserData(String phone, String password) async {
     try {
       return await signIn(phone, password);
     } catch (e) {
       return Error(e);
+    }
+  }
+
+  Future<bool> changePassword(String phone, String password) async {
+    try {
+      return await _authApi.changePassword(phone, {"password": password});
+    } catch (_) {
+      return false;
     }
   }
 }

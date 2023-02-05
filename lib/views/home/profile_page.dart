@@ -52,7 +52,7 @@ class _ProfilePageState extends State<ProfilePage> {
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
-                provider.user!.name,
+                provider.user!.name!,
                 style: Theme.of(context).textTheme.headline3,
               ),
               IconButton(onPressed: () {
@@ -69,7 +69,7 @@ class _ProfilePageState extends State<ProfilePage> {
               indent: MediaQuery.of(context).size.width * 0.25,
               endIndent: MediaQuery.of(context).size.width * 0.25),
         ),
-        _buildInfoCard("Full Name", provider.user!.name),
+        _buildInfoCard("Full Name", provider.user!.name!),
         _buildInfoCard("User Type", () {
           if (provider.user!.userRole == UserRole.employee) {
             return "Employee";

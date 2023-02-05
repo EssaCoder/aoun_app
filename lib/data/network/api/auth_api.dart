@@ -107,4 +107,17 @@ class AuthApi {
       rethrow;
     }
   }
+  Future<bool> changePassword(String phone,Map<String, dynamic> body) async {
+    try {
+      final response=  await _fireStore
+          .collection(Endpoints.users)
+          .where("phone", isEqualTo: phone)
+          .get();
+      await _fireStore
+          .collection(Endpoints.users).doc(response.docs.firstOrNull?.id).update(body);
+      return true;
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

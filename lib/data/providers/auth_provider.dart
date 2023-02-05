@@ -32,17 +32,17 @@ class AuthProvider extends ChangeNotifier {
     }
   }
 
-  Future<Result> sendCode(User user) async {
+  Future<Result> sendCode(User user,bool sendIfExist) async {
     try {
       setUser(user);
-      Result result = await _authRepository.sendCode(user.phone);
+      Result result = await _authRepository.sendCode(user.phone,sendIfExist);
       return result;
     } catch (e) {
       return Error(e);
     }
   }
 
-  Future<Result> verifyCode(String smsCode) async {
+  Future<Result> verifyCode(String smsCode,bool isSignUp) async {
     try {
       debugPrint(
           "===============AuthProvider->verifyCode->smsCode: ${smsCode} ==============");
@@ -50,7 +50,7 @@ class AuthProvider extends ChangeNotifier {
       debugPrint(
           "===============AuthProvider->verifyCode->result: ${result} ==============");
       if (result is Success) {
-        return await _authRepository.signUp(_user!);
+        return isSignUp ? await _authRepository.signUp(_user!) : result;
       }
       return Error();
     } catch (e) {
@@ -62,7 +62,7 @@ class AuthProvider extends ChangeNotifier {
 
   Future<void> showUsers() async {
     debugPrint("==========AuthRepository->signUp==========");
-    Result result = await _authRepository.showUsers(_user!.id);
+    Result result = await _authRepository.showUsers(_user!.id!);
     if (result is Success) {
       users = result.value;
       users.removeWhere((element) => element.id == _user!.id);
@@ -70,7 +70,7 @@ class AuthProvider extends ChangeNotifier {
     }
   }
 
-  Future<Result> changePermission(User user) async {
+  Future<Result> updateUser(User user) async {
     debugPrint("==========AuthRepository->signUp==========");
     Result result = await _authRepository.updateUser(user);
     return result;
@@ -84,5 +84,9 @@ class AuthProvider extends ChangeNotifier {
       Utils.logOut();
     }
     notifyListeners();
+  }
+  Future<bool> changePassword() async {
+    return await _authRepository.changePassword(
+        _user!.phone,_user!.password);
   }
 }

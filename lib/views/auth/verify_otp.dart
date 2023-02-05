@@ -1,5 +1,6 @@
 import 'package:aoun/data/network/data_response.dart';
 import 'package:aoun/data/providers/auth_provider.dart';
+import 'package:aoun/views/auth/forget_password.dart';
 import 'package:aoun/views/auth/sign_in_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -11,7 +12,8 @@ import '/views/shared/shared_values.dart';
 import '/views/shared/text_field_widget.dart';
 
 class VerifyOTP extends StatefulWidget {
-  const VerifyOTP({Key? key}) : super(key: key);
+  const VerifyOTP({Key? key, required this.isSignUp}) : super(key: key);
+  final bool isSignUp;
   @override
   State<VerifyOTP> createState() => _VerifyOTPState();
 }
@@ -55,19 +57,22 @@ class _VerifyOTPState extends State<VerifyOTP> {
                   height: 200,
                   child: Align(
                       alignment: Alignment.center,
-                      child: Text(
-                        "Please enter the verification code sent for the number:\n\n phone"
-                            .replaceAll(
-                                RegExp(r'phone'),
-                                Provider.of<AuthProvider>(context,
-                                            listen: false)
-                                        .user
-                                        ?.phone
-                                        .toString() ??
-                                    "+966XXXXXXXXX"),
-                        style: Theme.of(context).textTheme.subtitle1?.copyWith(
-                            fontWeight: FontWeight.bold, fontSize: 17),
-                        textAlign: TextAlign.center,
+                      child: Padding(
+                        padding: const EdgeInsets.all(SharedValues.padding),
+                        child: Text(
+                          "Please enter the verification code sent for the number:\n\n phone"
+                              .replaceAll(
+                                  RegExp(r'phone'),
+                                  Provider.of<AuthProvider>(context,
+                                              listen: false)
+                                          .user
+                                          ?.phone
+                                          .toString() ??
+                                      "+966XXXXXXXXX"),
+                          style: Theme.of(context).textTheme.subtitle1?.copyWith(
+                              fontWeight: FontWeight.bold, fontSize: 17),
+                          textAlign: TextAlign.center,
+                        ),
                       ))),
               const SizedBox(height: SharedValues.padding),
               Row(
@@ -103,10 +108,14 @@ class _VerifyOTPState extends State<VerifyOTP> {
                 child: ButtonWidget(
                   minWidth: double.infinity,
                   onPressed: () async {
+                    final provider=Provider.of<AuthProvider>(context, listen: false);
                     Result result =
-                        await Provider.of<AuthProvider>(context, listen: false)
-                            .verifyCode(controllers.join());
+                        await
+                        provider.verifyCode(controllers.map((e) => e.text).join(),widget.isSignUp);
                     if (result is Success) {
+                      if(!widget.isSignUp) {
+                        await  provider.changePassword();
+                      }
                       // ignore: use_build_context_synchronously
                       Navigator.pushAndRemoveUntil(
                           context,
@@ -135,10 +144,9 @@ class _VerifyOTPState extends State<VerifyOTP> {
                         style: Theme.of(context).textTheme.bodyText2),
                     TextButton(
                       onPressed: () {
-                        Navigator.of(context).pushAndRemoveUntil(
+                        Navigator.push(context,
                             MaterialPageRoute(
-                                builder: (context) => const SignUpScreen()),
-                            (Route<dynamic> route) => false);
+                                builder: (context) => widget.isSignUp?const SignUpScreen():const ForgetPassword()));
                       },
                       child: Text("Resend the code?",
                           style: Theme.of(context).textTheme.headline5),

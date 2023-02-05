@@ -65,7 +65,7 @@ class _UsersScreenState extends State<UsersScreen> {
                                       child: Align(
                                           alignment:
                                               AlignmentDirectional.centerStart,
-                                          child: Text(users[index].name,
+                                          child: Text(users[index].name!,
                                               style: Theme.of(context)
                                                   .textTheme
                                                   .headline3))),
@@ -73,7 +73,7 @@ class _UsersScreenState extends State<UsersScreen> {
                                       child: Align(
                                           alignment:
                                               AlignmentDirectional.centerStart,
-                                          child: Text(users[index].email,
+                                          child: Text(users[index].email!,
                                               style: Theme.of(context)
                                                   .textTheme
                                                   .button))),
@@ -87,7 +87,7 @@ class _UsersScreenState extends State<UsersScreen> {
                                           .showOverlayLoading(
                                           context,
                                               () async => await provider
-                                              .changePermission(
+                                              .updateUser(
                                               users[index]));
                                       if (result is Success) {
                                         // ignore: use_build_context_synchronously
@@ -104,7 +104,7 @@ class _UsersScreenState extends State<UsersScreen> {
                                           .showOverlayLoading(
                                           context,
                                               () async => await provider
-                                              .changePermission(
+                                              .updateUser(
                                               users[index]));
                                       if (result is Success) {
                                         // ignore: use_build_context_synchronously
@@ -121,7 +121,7 @@ class _UsersScreenState extends State<UsersScreen> {
                                           .showOverlayLoading(
                                               context,
                                               () async => await provider
-                                                  .changePermission(
+                                                  .updateUser(
                                                       users[index]));
                                       if (result is Success) {
                                         // ignore: use_build_context_synchronously

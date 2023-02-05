@@ -230,7 +230,7 @@ class _AddPilgrimsState extends State<AddPilgrims> {
                           supervisorPhone: supervisorPhone.text,
                           healthStatus: healthStatus.text,
                           healthProblem: healthProblem.text,
-                          userID: user!.id);
+                          userID: user!.id!);
                       Result result;
                       if (widget.pilgrim == null) {
                         result = await provider.setPilgrim(pilgrim);

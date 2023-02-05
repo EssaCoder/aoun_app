@@ -38,7 +38,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     phone = TextEditingController(text: widget.user?.phone);
     identityNumber = TextEditingController(text: widget.user?.identityNumber);
     email = TextEditingController(text: widget.user?.email);
-    userRole = DropdownMenuItemModel(text: widget.user?.userRole.name ?? "");
+    userRole = DropdownMenuItemModel(text: widget.user?.userRole?.name ?? "");
     password = TextEditingController();
     confirmPassword = TextEditingController();
     super.initState();
@@ -94,8 +94,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   child: TextFieldWidget(
                       controller: phone,
                       hintText: "Phone",
-                      prefixIcon: const SizedBox(
-                          width: 50, child: Center(child: Text("+966"))),
+                      readOnly: widget.user!=null,
+                      prefixIcon: SizedBox(
+                          width: 50,
+                          child: Center(
+                              child: Text("+966",
+                                  style:
+                                      Theme.of(context).textTheme.subtitle1))),
+                      keyboardType: TextInputType.number,
                       validator: (value) {
                         if (value != null && value.isNotEmpty) {
                           return null;
@@ -122,7 +128,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       hintText: "Email",
                       validator: (value) {
                         if (value == null) {
-                          return "هذا الحقل مطلوب";
+                          return "";
                         } else if (!Utils.validateEmail(value)) {
                           return "ايميل غير صالح";
                         }
@@ -133,62 +139,80 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   padding: const EdgeInsets.all(SharedValues.padding),
                   child: TextFieldWidget(
                     controller: password,
-                    hintText: "Password",
+                    hintText: widget.user != null ? "Old Password" : "Password",
                     textInputAction: TextInputAction.none,
                     obscureText: true,
                     validator: (value) {
-                      if (value != null && value.isNotEmpty) {
+                      if (widget.user != null &&
+                          widget.user!.password != value) {
+                        return "Password does not match old password";
+                      } else if (value != null && value.isNotEmpty) {
                         return null;
                       }
                       return "This field is required";
                     },
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(SharedValues.padding),
-                  child: TextFieldWidget(
-                    controller: confirmPassword,
-                    hintText: "Confirm Password",
-                    textInputAction: TextInputAction.none,
-                    obscureText: true,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return "This field is required";
-                      } else if (confirmPassword.text != password.text) {
-                        return "Password does not match";
-                      }
-                      return null;
-                    },
+                if (widget.user == null)
+                  Padding(
+                    padding: const EdgeInsets.all(SharedValues.padding),
+                    child: TextFieldWidget(
+                      controller: confirmPassword,
+                      hintText: "Confirm Password",
+                      textInputAction: TextInputAction.none,
+                      obscureText: true,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return "This field is required";
+                        } else if (confirmPassword.text != password.text) {
+                          return "Password does not match";
+                        }
+                        return null;
+                      },
+                    ),
                   ),
-                ),
                 Padding(
                   padding: const EdgeInsets.all(SharedValues.padding),
                   child: ButtonWidget(
                     minWidth: double.infinity,
                     onPressed: () async {
                       if (_formKey.currentState!.validate()) {
+                        late Result result;
+                        final provider =
+                            Provider.of<AuthProvider>(context, listen: false);
                         final user = User(
                             id: DateTime.now().millisecondsSinceEpoch,
                             name: name.text,
                             email: email.text,
                             phone: "+966${phone.text}",
-                            userRole: UserRole.user,
+                            userRole: widget.user?.userRole??UserRole.user,
                             identityNumber: identityNumber.text,
                             password: password.text);
-                        Result result = await Provider.of<AuthProvider>(context,
-                                listen: false)
-                            .sendCode(user);
+                        if (widget.user != null) {
+                          user.id = widget.user!.id;
+                          user.userRole = widget.user!.userRole;
+                          user.phone = widget.user!.phone;
+                          result = await provider.updateUser(user);
+                          await Provider.of<AuthProvider>(context,listen: false).getUserData();
+                        } else {
+                          result = await await provider.sendCode(user, false);
+                        }
                         if (result is Success) {
-                          // ignore: use_build_context_synchronously
-                          Navigator.pushAndRemoveUntil(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const VerifyOTP(),
-                              ),
-                              (_) => false);
+                          if (widget.user != null)
+                            Navigator.pop(context);
+                          else {
+                            // ignore: use_build_context_synchronously
+                            Navigator.pushAndRemoveUntil(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      const VerifyOTP(isSignUp: true),
+                                ),
+                                (_) => false);
+                          }
                         } else if (result is Error &&
                             result.exception is ExistUserException) {
-                          String message = "User exist please sign in.";
+                          String message = "User exist please sign in";
                           // ignore: use_build_context_synchronously
                           SharedComponents.showSnackBar(context, message,
                               backgroundColor:
@@ -205,7 +229,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       }
                     },
                     child: Text(
-                      "Sign up",
+                      widget.user != null?"Edit":"Sign up",
                       style: Theme.of(context).textTheme.button,
                     ),
                   ),
@@ -218,10 +242,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           style: Theme.of(context).textTheme.bodyText2),
                       TextButton(
                         onPressed: () async {
-                          Navigator.of(context).pushAndRemoveUntil(
+                          Navigator.push(
+                              context,
                               MaterialPageRoute(
-                                  builder: (context) => const SignInScreen()),
-                              (Route<dynamic> route) => false);
+                                  builder: (context) => const SignInScreen()));
                         },
                         child: Text("Sign in?",
                             style: Theme.of(context).textTheme.headline5),

@@ -1,22 +1,22 @@
 import 'package:aoun/data/utils/enum.dart';
 
 class User {
-  int id;
-  String name;
-  String email;
+  int? id;
+  String? name;
+  String? email;
   String phone;
-  String identityNumber;
+  String? identityNumber;
   String password;
-  UserRole userRole;
+  UserRole? userRole;
 
   User(
-      {required this.id,
-      required this.name,
-      required this.email,
-      required this.phone,
-      required this.identityNumber,
-      required this.userRole,
-      required this.password});
+      {this.id,
+      this.name,
+      this.email,
+   required   this.phone,
+      this.identityNumber,
+      this.userRole,
+        required   this.password});
 
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
@@ -47,7 +47,7 @@ class User {
       "phone": phone,
       "identityNumber": identityNumber,
       "password": password,
-      "roles": userRole.name
+      "roles": userRole?.name
     };
   }
 }

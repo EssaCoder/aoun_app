@@ -3,11 +3,12 @@ import '/views/shared/shared_values.dart';
 
 class ButtonWidget extends StatefulWidget {
   const ButtonWidget(
-      {Key? key, this.onPressed, this.minWidth, this.height, this.child, this.color, this.shape, this.progressColor})
+      {Key? key, this.onPressed, this.minWidth, this.height, this.child, this.color, this.shape, this.progressColor, this.elevation})
       : super(key: key);
   final Function()? onPressed;
   final double? minWidth;
   final double? height;
+  final double? elevation;
   final Widget? child;
   final Color? color;
   final Color? progressColor;
@@ -33,6 +34,7 @@ class _ButtonWidgetState extends State<ButtonWidget> {
       },
       height: widget.height ?? 55,
       padding: EdgeInsets.zero,
+      elevation: widget.elevation,
       minWidth: widget.minWidth,
       color: widget.color??Theme.of(context).primaryColor,
       shape: widget.shape??OutlineInputBorder(
