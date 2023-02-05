@@ -98,6 +98,23 @@ class _UsersScreenState extends State<UsersScreen> {
                                         SharedComponents.showSnackBar(context,
                                             "Error occurred during operation");
                                       }
+                                    } else if (value == "Upgrade To User") {
+                                      users[index].userRole = UserRole.user;
+                                      final result = await SharedComponents
+                                          .showOverlayLoading(
+                                          context,
+                                              () async => await provider
+                                              .changePermission(
+                                              users[index]));
+                                      if (result is Success) {
+                                        // ignore: use_build_context_synchronously
+                                        SharedComponents.showSnackBar(
+                                            context, "Success upgrade user");
+                                      } else {
+                                        // ignore: use_build_context_synchronously
+                                        SharedComponents.showSnackBar(context,
+                                            "Error occurred during operation");
+                                      }
                                     } else if (value == "Upgrade To Employee") {
                                       users[index].userRole = UserRole.employee;
                                       final result = await SharedComponents
@@ -120,7 +137,7 @@ class _UsersScreenState extends State<UsersScreen> {
                                   itemBuilder: (BuildContext context) =>
                                       <PopupMenuEntry<String>>[
                                         for (var item in [
-                                          "Disable",
+                                          users[index].userRole==UserRole.disable?"Upgrade To User":"Disable",
                                           "Upgrade To Employee"
                                         ])
                                           PopupMenuItem(

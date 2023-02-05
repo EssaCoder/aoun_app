@@ -20,11 +20,17 @@ class _ReadQRPageState extends State<ReadQRPage> {
   @override
   void initState() {
     debugPrint("===============ReadQRPage->initState================");
+    final provider=Provider.of<PilgrimsProvider>(context,listen: false);
+    pilgrim=provider.pilgrim;
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       if (pilgrim == null) {
         SharedComponents.showOverlayLoading(context, () async {
-          await Provider.of<PilgrimsProvider>(context, listen: false)
+          pilgrim = await provider
               .scanPilgrim();
+          provider.pilgrim=pilgrim;
+          setState(() {
+
+          });
         },
             color: Theme.of(context).colorScheme.background,
             progressColor: Theme.of(context).colorScheme.secondary);

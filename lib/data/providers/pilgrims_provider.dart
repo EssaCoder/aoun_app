@@ -13,6 +13,7 @@ class PilgrimsProvider extends ChangeNotifier {
   List<Pilgrim?> adsPilgrims = [null];
   List<Pilgrim> _pilgrims = [];
   List<Pilgrim> pilgrims = [];
+  Pilgrim? pilgrim;
   Future<Result> setPilgrim(Pilgrim pilgrim) async {
     return await _pilgrimsRepository.setPilgrim(pilgrim);
   }
