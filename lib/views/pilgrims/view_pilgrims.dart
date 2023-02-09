@@ -174,7 +174,7 @@ class _ViewPilgrimsState extends State<ViewPilgrims> {
                                   )),
                                   PopupMenuButton<String>(
                                       onSelected: (value) async {
-                                        if (value == "Delete") {
+                                        if (value == "deactivate") {
                                           pilgrims[index].deleteAt =
                                               DateTime.now();
                                          final result=await SharedComponents.showOverlayLoading(context, () async => await provider
@@ -182,7 +182,7 @@ class _ViewPilgrimsState extends State<ViewPilgrims> {
                                          if(result is Success){
                                            // ignore: use_build_context_synchronously
                                            SharedComponents.showSnackBar(
-                                               context, "Pilgrim deleted");
+                                               context, "Pilgrim deactivated");
                                          }
                                         }
                                         else if (value == "Edit") {
@@ -209,7 +209,7 @@ class _ViewPilgrimsState extends State<ViewPilgrims> {
                                       },
                                       itemBuilder: (BuildContext context) =>
                                           <PopupMenuEntry<String>>[
-                                            for (var item in ["Delete", "Edit",pilgrims[index].status==PilgrimStatus.missing?"Not Missing":"Missing"])
+                                            for (var item in ["deactivate", "Edit",pilgrims[index].status==PilgrimStatus.missing?"Not Missing":"Missing"])
                                               PopupMenuItem(
                                                 value: item,
                                                 child: Text(

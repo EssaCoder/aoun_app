@@ -4,7 +4,6 @@ class AssetsVariable {
   static AssetsVariable get instance => _instance;
 
   //images
-  static const String testImage="assets/images/test-image.jpg";
 
   //icons:
   static const String user="assets/icons/user-icon.svg";

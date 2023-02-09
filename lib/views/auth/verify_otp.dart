@@ -85,6 +85,7 @@ class _VerifyOTPState extends State<VerifyOTP> {
                             controller: controller,
                             keyboardType: TextInputType.number,
                             textAlign: TextAlign.center,
+                            contentPadding: EdgeInsets.zero,
                             textInputAction: controller == controllers.last
                                 ? TextInputAction.done
                                 : TextInputAction.next,

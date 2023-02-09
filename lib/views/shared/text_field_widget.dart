@@ -18,7 +18,7 @@ class TextFieldWidget extends StatelessWidget {
         this.prefixIcon,
         this.suffixIcon,
         this.textInputAction,
-        this.maxLines})
+        this.maxLines, this.contentPadding})
       : super(key: key);
   final TextEditingController controller;
   final String? hintText;
@@ -35,6 +35,7 @@ class TextFieldWidget extends StatelessWidget {
   final Widget? suffixIcon;
   final Widget? prefixIcon;
   final ValueChanged<String>? onChanged;
+  final EdgeInsetsGeometry? contentPadding;
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +62,7 @@ class TextFieldWidget extends StatelessWidget {
           textAlign: textAlign ?? TextAlign.start,
           style: Theme.of(context).textTheme.subtitle1,
           decoration: InputDecoration(
-              contentPadding:
+              contentPadding:contentPadding??
               Theme.of(context).inputDecorationTheme.contentPadding,prefixIcon: prefixIcon),
         ),
       ],
