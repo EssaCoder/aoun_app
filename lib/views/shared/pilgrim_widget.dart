@@ -1,10 +1,13 @@
 import 'package:aoun/data/models/pilgrim.dart';
+import 'package:aoun/data/providers/auth_provider.dart';
+import 'package:aoun/data/utils/enum.dart';
 import 'package:aoun/data/utils/utils.dart';
 import 'package:aoun/views/shared/button_widget.dart';
 import 'package:aoun/views/shared/shared_components.dart';
 import 'package:aoun/views/shared/shared_values.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:provider/provider.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 class PilgrimWidget extends StatefulWidget {
@@ -34,11 +37,13 @@ class _PilgrimWidgetState extends State<PilgrimWidget> {
         "title": "Full Name",
         "data": widget.pilgrim?.name,
       },
-      {
+      if(Provider.of<AuthProvider>(context,listen: false).user!.userRole!=UserRole.user)
+        {
         "title": "Address",
         "data": widget.pilgrim?.address,
       },
-      {
+      if(Provider.of<AuthProvider>(context,listen: false).user!.userRole!=UserRole.user)
+        {
         "title": "Mobile Number",
         "data": widget.pilgrim?.phone,
       },
@@ -50,8 +55,9 @@ class _PilgrimWidgetState extends State<PilgrimWidget> {
         "title": "Health Status",
         "data": widget.pilgrim?.healthStatus,
       },
+      if(Provider.of<AuthProvider>(context,listen: false).user!.userRole!=UserRole.user)
       {
-        "title": "Health Problrm",
+        "title": "Health Problem",
         "data": widget.pilgrim?.healthProblem,
       },
     ];

@@ -8,7 +8,7 @@ class AuthApi {
   final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
   final _twilioPhoneVerify = TwilioPhoneVerify(
       accountSid: 'AC21ec03a85b5e447bd560f19f932f0005',
-      authToken: 'faa6aac5b13a9d7c6962562153dab347',
+      authToken: 'ccf9380cf084b409162e5e20e92208cd',
       serviceSid: 'VA7534bdacc6f2c1f33c93842b6dee6811');
   Future<String?> setUser(Map<String, dynamic> body) async {
     try {

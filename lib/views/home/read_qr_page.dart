@@ -48,14 +48,25 @@ class _ReadQRPageState extends State<ReadQRPage> {
         const SizedBox(height: SharedValues.padding * 2),
         Padding(
             padding: const EdgeInsets.all(SharedValues.padding),
-            child: Text(pilgrim?.name ?? "Read QR Code",
-                style: Theme.of(context).textTheme.headline2)),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [Flexible(
+                  child: Text(pilgrim?.name ?? "Read QR Code",
+                      style: Theme.of(context).textTheme.headline2),
+                ),
+                Flexible(child: InkWell(
+                    onTap: () async {
+                      provider.clearPilgrim();
+                      pilgrim = await provider.scanPilgrim();
+
+                    },child: Icon(Icons.refresh,color: Theme.of(context).colorScheme.background,)))
+              ],
+            )),
         const SizedBox(height: SharedValues.padding * 3),
         Expanded(
           child: PilgrimWidget(
             onPressed: () async {
               pilgrim = await provider.scanPilgrim();
-              if (pilgrim != null) {}
             },
             pilgrim: pilgrim,
             titleColor: Theme.of(context).colorScheme.background,

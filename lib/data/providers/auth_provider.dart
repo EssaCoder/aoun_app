@@ -1,5 +1,4 @@
 import 'package:aoun/data/network/http_exception.dart';
-import 'package:aoun/data/utils/enum.dart';
 import 'package:aoun/data/utils/utils.dart';
 import 'package:flutter/material.dart';
 import '/data/network/data_response.dart';
@@ -49,7 +48,7 @@ class AuthProvider extends ChangeNotifier {
       Result result = await _authRepository.verifyCode(_user!.phone, smsCode);
       debugPrint(
           "===============AuthProvider->verifyCode->result: ${result} ==============");
-      if (result is Success) {
+      if (result is Success&&result.value==true) {
         return isSignUp ? await _authRepository.signUp(_user!) : result;
       }
       return Error();

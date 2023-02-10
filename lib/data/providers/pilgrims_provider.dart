@@ -82,4 +82,8 @@ class PilgrimsProvider extends ChangeNotifier {
         notifyListeners();
       }
   }
+  void clearPilgrim(){
+    pilgrim=null;
+  }
+
 }
