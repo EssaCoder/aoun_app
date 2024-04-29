@@ -83,15 +83,7 @@ class _ViewPilgrimsState extends State<ViewPilgrims> {
                         ButtonWidget(
                           child: Text("Search",
                               style: Theme.of(context).textTheme.button),
-                          onPressed: () async {
-                            if (searchType == 1) {
-                              provider.searchPilgrims(
-                                  search: searchController.text);
-                            } else {
-                              provider.searchPilgrims(isMyAccount: true);
-                            }
-                            Navigator.pop(ctx);
-                          },
+                          onPressed: () async { },
                         )
                       ],
                     );
@@ -111,129 +103,85 @@ class _ViewPilgrimsState extends State<ViewPilgrims> {
                 ),
               )),
           Expanded(
-              child: FutureBuilder(
-                  future: provider.getPilgrims(),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const LoadingWidget();
-                    } else {
-                      if (provider.pilgrims.isEmpty) {
-                        return SharedComponents.emptyWidget();
-                      }
-                      return Selector<PilgrimsProvider, List<Pilgrim>>(
-                        selector: (p0, p1) => p1.pilgrims,
-                        builder: (ctx, pilgrims, child) => ListView.builder(
-                          padding: const EdgeInsets.all(SharedValues.padding),
-                          itemCount: pilgrims.length,
-                          itemBuilder: (context, index) => InkWell(
-                            borderRadius: BorderRadius.circular(
-                                SharedValues.borderRadius),
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => PilgrimDetails(
-                                        pilgrim: pilgrims[index]),
-                                  ));
-                            },
-                            child: Container(
-                              height: 80,
-                              width: double.infinity,
-                              padding:
-                                  const EdgeInsets.all(SharedValues.padding),
-                              margin:
-                                  const EdgeInsets.all(SharedValues.padding),
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(
-                                      SharedValues.borderRadius),
-                                  color: Theme.of(context).primaryColor),
-                              child: Row(
+              child:  Selector<PilgrimsProvider, List<Pilgrim>>(
+                selector: (p0, p1) => p1.pilgrims,
+                builder: (ctx, pilgrims, child) => ListView.builder(
+                  padding: const EdgeInsets.all(SharedValues.padding),
+                  itemCount: pilgrims.length,
+                  itemBuilder: (context, index) => InkWell(
+                    borderRadius: BorderRadius.circular(
+                        SharedValues.borderRadius),
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => PilgrimDetails(
+                                pilgrim: pilgrims[index]),
+                          ));
+                    },
+                    child: Container(
+                      height: 80,
+                      width: double.infinity,
+                      padding:
+                      const EdgeInsets.all(SharedValues.padding),
+                      margin:
+                      const EdgeInsets.all(SharedValues.padding),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(
+                              SharedValues.borderRadius),
+                          color: Theme.of(context).primaryColor),
+                      child: Row(
+                        children: [
+                          Expanded(
+                              child: Column(
+                                crossAxisAlignment:
+                                CrossAxisAlignment.start,
                                 children: [
                                   Expanded(
-                                      child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Expanded(
-                                          child: Align(
-                                              alignment: AlignmentDirectional
-                                                  .centerStart,
-                                              child: Text(pilgrims[index].name,
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .headline3))),
-                                      Expanded(
-                                          child: Align(
-                                              alignment: AlignmentDirectional
-                                                  .centerStart,
-                                              child: Text(pilgrims[index].phone,
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .button))),
-                                    ],
-                                  )),
-                                  PopupMenuButton<String>(
-                                      onSelected: (value) async {
-                                        if (value == "deactivate") {
-                                          pilgrims[index].deleteAt =
-                                              DateTime.now();
-                                         final result=await SharedComponents.showOverlayLoading(context, () async => await provider
-                                              .updatePilgrim(pilgrims[index]));
-                                         if(result is Success){
-                                           // ignore: use_build_context_synchronously
-                                           SharedComponents.showSnackBar(
-                                               context, "Pilgrim deactivated");
-                                         }
-                                        }
-                                        else if (value == "Edit") {
-                                          Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) =>
-                                                    AddPilgrims(
-                                                        pilgrim:
-                                                            pilgrims[index]),
-                                              ));
-                                        }
-                                        else if (value=="Missing"){
-                                          pilgrims[index].status=PilgrimStatus.missing;
-                                          SharedComponents.showOverlayLoading(context, ()async{
-                                            await provider.updatePilgrim(pilgrims[index]);
-                                          });
-                                        }  else if (value=="Not Missing"){
-                                          pilgrims[index].status=PilgrimStatus.none;
-                                          SharedComponents.showOverlayLoading(context, ()async{
-                                            await provider.updatePilgrim(pilgrims[index]);
-                                          });
-                                        }
-                                      },
-                                      itemBuilder: (BuildContext context) =>
-                                          <PopupMenuEntry<String>>[
-                                            for (var item in ["deactivate", "Edit",pilgrims[index].status==PilgrimStatus.missing?"Not Missing":"Missing"])
-                                              PopupMenuItem(
-                                                value: item,
-                                                child: Text(
-                                                  item,
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .subtitle2,
-                                                ),
-                                              )
-                                          ],
-                                      child: Icon(
-                                        Icons.more_vert,
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .onPrimary,
-                                      )),
+                                      child: Align(
+                                          alignment: AlignmentDirectional
+                                              .centerStart,
+                                          child: Text(pilgrims[index].name,
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .headline3))),
+                                  Expanded(
+                                      child: Align(
+                                          alignment: AlignmentDirectional
+                                              .centerStart,
+                                          child: Text(pilgrims[index].phone,
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .button))),
                                 ],
-                              ),
-                            ),
-                          ),
-                        ),
-                      );
-                    }
-                  }))
+                              )),
+                          PopupMenuButton<String>(
+                              onSelected: (value) async {        },
+                              itemBuilder: (BuildContext context) =>
+                              <PopupMenuEntry<String>>[
+                                for (var item in ["deactivate", "Edit",pilgrims[index].status==PilgrimStatus.missing?"Not Missing":"Missing"])
+                                  PopupMenuItem(
+                                    value: item,
+                                    child: Text(
+                                      item,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .subtitle2,
+                                    ),
+                                  )
+                              ],
+                              child: Icon(
+                                Icons.more_vert,
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .onPrimary,
+                              )),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ))
         ],
       ),
     ));

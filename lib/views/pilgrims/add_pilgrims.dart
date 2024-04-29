@@ -215,46 +215,7 @@ class _AddPilgrimsState extends State<AddPilgrims> {
                   padding: const EdgeInsets.all(SharedValues.padding),
                   child: ButtonWidget(
                     minWidth: double.infinity,
-                    onPressed: () async {
-                      final user =
-                          Provider.of<AuthProvider>(context, listen: false)
-                              .user;
-                      Pilgrim pilgrim = Pilgrim(
-                          id: widget.pilgrim?.id ??
-                              DateTime.now().millisecondsSinceEpoch,
-                          name: name.text,
-                          url: image?.path,
-                          address: address.text,
-                          phone: phone.text,
-                          status: PilgrimStatus.none,
-                          supervisorPhone: supervisorPhone.text,
-                          healthStatus: healthStatus.text,
-                          healthProblem: healthProblem.text,
-                          userID: user!.id!);
-                      Result result;
-                      if (widget.pilgrim == null) {
-                        result = await provider.setPilgrim(pilgrim);
-                      } else {
-                        result = await provider.updatePilgrim(pilgrim);
-                      }
-                      if (result is Success) {
-                        // ignore: use_build_context_synchronously
-                        SharedComponents.showSnackBar(
-                            context,
-                            widget.pilgrim == null
-                                ? "Pilgrim added success"
-                                : "Pilgrim edit success");
-                      } else {
-                        // ignore: use_build_context_synchronously
-                        SharedComponents.showSnackBar(
-                            // ignore: use_build_context_synchronously
-                            context,
-                            "Error occurred !!",
-                            backgroundColor:
-                                // ignore: use_build_context_synchronously
-                                Theme.of(context).colorScheme.error);
-                      }
-                    },
+                    onPressed: () async {   },
                     child: Text(
                       widget.pilgrim == null ? "Create" : "Edit",
                       style: Theme.of(context).textTheme.button,

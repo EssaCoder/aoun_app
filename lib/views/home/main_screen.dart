@@ -1,4 +1,3 @@
-import 'package:aoun/data/providers/auth_provider.dart';
 import 'package:aoun/data/providers/pilgrims_provider.dart';
 import 'package:aoun/views/home/home_page.dart';
 import 'package:aoun/views/home/profile_page.dart';
@@ -26,7 +25,6 @@ class _MainScreenState extends State<MainScreen> {
       SharedComponents.showOverlayLoading(context, ()async{
         // await Provider.of<AuthProvider>(context,listen: false).getUserData();
         // ignore: use_build_context_synchronously
-        await Provider.of<PilgrimsProvider>(context,listen: false).getAds();
       });
     });
     super.initState();

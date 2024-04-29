@@ -17,24 +17,14 @@ class _ReadQRPageState extends State<ReadQRPage> {
   final GlobalKey globalKey = GlobalKey();
 
   Pilgrim? pilgrim;
+
   @override
   void initState() {
     debugPrint("===============ReadQRPage->initState================");
-    final provider=Provider.of<PilgrimsProvider>(context,listen: false);
-    pilgrim=provider.pilgrim;
+    final provider = Provider.of<PilgrimsProvider>(context, listen: false);
+    pilgrim = provider.pilgrim;
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      if (pilgrim == null) {
-        SharedComponents.showOverlayLoading(context, () async {
-          pilgrim = await provider
-              .scanPilgrim();
-          provider.pilgrim=pilgrim;
-          setState(() {
-
-          });
-        },
-            color: Theme.of(context).colorScheme.background,
-            progressColor: Theme.of(context).colorScheme.secondary);
-      }
+      if (pilgrim == null) {}
     });
 
     super.initState();
@@ -50,24 +40,24 @@ class _ReadQRPageState extends State<ReadQRPage> {
             padding: const EdgeInsets.all(SharedValues.padding),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [Flexible(
+              children: [
+                Flexible(
                   child: Text(pilgrim?.name ?? "Read QR Code",
                       style: Theme.of(context).textTheme.headline2),
                 ),
-                Flexible(child: InkWell(
-                    onTap: () async {
-                      provider.clearPilgrim();
-                      pilgrim = await provider.scanPilgrim();
-
-                    },child: Icon(Icons.refresh,color: Theme.of(context).colorScheme.background,)))
+                Flexible(
+                    child: InkWell(
+                        onTap: () async {},
+                        child: Icon(
+                          Icons.refresh,
+                          color: Theme.of(context).colorScheme.background,
+                        )))
               ],
             )),
         const SizedBox(height: SharedValues.padding * 3),
         Expanded(
           child: PilgrimWidget(
-            onPressed: () async {
-              pilgrim = await provider.scanPilgrim();
-            },
+            onPressed: () async {  },
             pilgrim: pilgrim,
             titleColor: Theme.of(context).colorScheme.background,
             detailsColor: Theme.of(context).colorScheme.background,
