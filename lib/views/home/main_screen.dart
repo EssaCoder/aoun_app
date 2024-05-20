@@ -43,6 +43,7 @@ class _MainScreenState extends State<MainScreen> {
     return SafeArea(
         child: Scaffold(
             body: PageView(
+              physics: NeverScrollableScrollPhysics(),
               controller: controller,
               onPageChanged: (value) => setState(() {
                 debugPrint("===============MainScreen->PageView->value: $value================");

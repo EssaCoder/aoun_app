@@ -64,7 +64,7 @@ class _SignInScreenState extends State<SignInScreen> {
                       controller: phone,
                       hintText: "Phone",
                       prefixIcon: SizedBox(
-                          width: 50, child: Center(child: Text("+966",style: Theme.of(context).textTheme.subtitle1))),
+                          width: 50, child: Center(child: Text("+966",style: Theme.of(context).textTheme.titleMedium))),
                       keyboardType: TextInputType.number,
                       validator: (value) {
                         if (value != null && value.isNotEmpty) {
@@ -95,7 +95,7 @@ class _SignInScreenState extends State<SignInScreen> {
                               builder: (context) => ForgetPassword()));
                     },
                     child: Text("Forget password?",
-                        style: Theme.of(context).textTheme.headline5),
+                        style: Theme.of(context).textTheme.headlineSmall),
                   ),
                 ),
                 const SizedBox(height: SharedValues.padding),
@@ -134,7 +134,7 @@ class _SignInScreenState extends State<SignInScreen> {
                     },
                     child: Text(
                       "Sign in",
-                      style: Theme.of(context).textTheme.button,
+                      style: Theme.of(context).textTheme.labelLarge,
                     ),
                   ),
                 ),
@@ -143,7 +143,7 @@ class _SignInScreenState extends State<SignInScreen> {
                   child: Row(
                     children: [
                       Text("I don't have an account",
-                          style: Theme.of(context).textTheme.bodyText2),
+                          style: Theme.of(context).textTheme.bodyMedium),
                       TextButton(
                         onPressed: () {
                           Navigator.push(context,
@@ -151,7 +151,7 @@ class _SignInScreenState extends State<SignInScreen> {
                                   builder: (context) => const SignUpScreen()));
                         },
                         child: Text("Sign up?",
-                            style: Theme.of(context).textTheme.headline5),
+                            style: Theme.of(context).textTheme.headlineSmall),
                       )
                     ],
                   ),

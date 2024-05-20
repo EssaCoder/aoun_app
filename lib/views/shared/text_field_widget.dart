@@ -60,7 +60,7 @@ class TextFieldWidget extends StatelessWidget {
           onTap: onTap,
           focusNode: focusNode,
           textAlign: textAlign ?? TextAlign.start,
-          style: Theme.of(context).textTheme.subtitle1,
+          style: Theme.of(context).textTheme.titleMedium,
           decoration: InputDecoration(
               contentPadding:contentPadding??
               Theme.of(context).inputDecorationTheme.contentPadding,prefixIcon: prefixIcon),

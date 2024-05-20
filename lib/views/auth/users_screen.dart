@@ -68,15 +68,15 @@ class _UsersScreenState extends State<UsersScreen> {
                                           child: Text(users[index].name!,
                                               style: Theme.of(context)
                                                   .textTheme
-                                                  .headline3))),
+                                                  .displaySmall))),
                                   Expanded(
                                       child: Align(
                                           alignment:
                                               AlignmentDirectional.centerStart,
                                           child: Text(users[index].email!,
                                               style: Theme.of(context)
-                                                  .textTheme
-                                                  .button))),
+                                                  .textTheme.
+                                                  labelLarge))),
                                 ],
                               )),
                               PopupMenuButton<String>(
@@ -146,7 +146,7 @@ class _UsersScreenState extends State<UsersScreen> {
                                               item,
                                               style: Theme.of(context)
                                                   .textTheme
-                                                  .subtitle2,
+                                                  .titleSmall,
                                             ),
                                           )
                                       ],

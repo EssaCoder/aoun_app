@@ -52,7 +52,7 @@ class _ReadQRPageState extends State<ReadQRPage> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [Flexible(
                   child: Text(pilgrim?.name ?? "Read QR Code",
-                      style: Theme.of(context).textTheme.headline2),
+                      style: Theme.of(context).textTheme.displayMedium),
                 ),
                 Flexible(child: InkWell(
                     onTap: () async {

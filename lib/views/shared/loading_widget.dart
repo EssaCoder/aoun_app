@@ -33,7 +33,7 @@ class LoadingWidget extends StatelessWidget {
                     )),
               )),
           const SizedBox(height: SharedValues.padding * 5),
-          Text("Loading data...", style: Theme.of(context).textTheme.button)
+          Text("Loading data...", style: Theme.of(context).textTheme.labelLarge)
         ],
       ),
     );

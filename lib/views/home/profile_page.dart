@@ -33,7 +33,7 @@ class _ProfilePageState extends State<ProfilePage> {
         Padding(
             padding: const EdgeInsets.all(SharedValues.padding),
             child:
-                Text("Profile", style: Theme.of(context).textTheme.headline2)),
+                Text("Profile", style: Theme.of(context).textTheme.displayMedium)),
         const SizedBox(height: SharedValues.padding * 3),
         Align(
           alignment: AlignmentDirectional.topCenter,
@@ -53,7 +53,7 @@ class _ProfilePageState extends State<ProfilePage> {
             children: [
               Text(
                 provider.user!.name!,
-                style: Theme.of(context).textTheme.headline3,
+                style: Theme.of(context).textTheme.displaySmall,
               ),
               IconButton(onPressed: () {
                 Navigator.push(context, MaterialPageRoute(builder: (context) => SignUpScreen(user: provider.user,)));
@@ -98,7 +98,7 @@ class _ProfilePageState extends State<ProfilePage> {
               alignment: AlignmentDirectional.centerStart,
               child: Text(
                 title,
-                style: Theme.of(context).textTheme.button,
+                style: Theme.of(context).textTheme.labelLarge,
               ),
             ),
           ),
@@ -110,8 +110,8 @@ class _ProfilePageState extends State<ProfilePage> {
                 child: Text(
                   subTitle,
                   style: Theme.of(context)
-                      .textTheme
-                      .button
+                      .textTheme.
+                      labelLarge
                       ?.copyWith(fontSize: 12),
                 ),
               ),

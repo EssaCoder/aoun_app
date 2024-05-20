@@ -50,7 +50,7 @@ class SharedComponents {
                           alignment: AlignmentDirectional.bottomStart,
                           child: Text(
                             details,
-                            style: Theme.of(context).textTheme.headline2,
+                            style: Theme.of(context).textTheme.displayMedium,
                           ),
                         ),
                       )),
@@ -68,7 +68,7 @@ class SharedComponents {
                               alignment: AlignmentDirectional.centerStart,
                               child: Text(
                                 title,
-                                style: Theme.of(context).textTheme.headline1,
+                                style: Theme.of(context).textTheme.displayLarge,
                               ),
                             ),
                           ),
@@ -181,7 +181,7 @@ class SharedComponents {
             Flexible(
               child: Text(
                 text,
-                style: Theme.of(context).textTheme.bodyText1,
+                style: Theme.of(context).textTheme.bodyLarge,
               ),
             ),
           ],
@@ -211,7 +211,7 @@ class SharedComponents {
                               "No Data !!",
                               style: Theme.of(context)
                                   .textTheme
-                                  .headline3
+                                  .displaySmall
                                   ?.copyWith(
                                       color: color??Theme.of(context).primaryColor),
                             )))

@@ -131,7 +131,7 @@ class _PilgrimWidgetState extends State<PilgrimWidget> {
                                   Text(
                                     "Name: ${widget.pilgrim?.name}",
                                     style:
-                                        Theme.of(context).textTheme.headline5,
+                                        Theme.of(context).textTheme.headlineSmall,
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.all(
@@ -139,7 +139,7 @@ class _PilgrimWidgetState extends State<PilgrimWidget> {
                                     child: Text(
                                       "ID: ${widget.pilgrim?.id}",
                                       style:
-                                          Theme.of(context).textTheme.headline5,
+                                          Theme.of(context).textTheme.headlineSmall,
                                     ),
                                   )
                                 ]
@@ -219,7 +219,7 @@ class _PilgrimWidgetState extends State<PilgrimWidget> {
                                   item["title"].toString(),
                                   style: Theme.of(context)
                                       .textTheme
-                                      .bodyText2
+                                      .bodyMedium
                                       ?.copyWith(color: widget.titleColor),
                                 ),
                                 Padding(
@@ -229,7 +229,7 @@ class _PilgrimWidgetState extends State<PilgrimWidget> {
                                     item["data"].toString(),
                                     style: Theme.of(context)
                                         .textTheme
-                                        .subtitle1
+                                        .titleMedium
                                         ?.copyWith(color: widget.detailsColor),
                                   ),
                                 ),

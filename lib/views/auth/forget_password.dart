@@ -59,7 +59,7 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                         height: 200,
                         child: Center(
                             child: Text("Forget Password",
-                                style: Theme.of(context).textTheme.headline5?.copyWith(fontSize: 20))),
+                                style: Theme.of(context).textTheme.headlineSmall?.copyWith(fontSize: 20))),
                       ),
                       Padding(
                         padding: const EdgeInsets.all(SharedValues.padding),
@@ -67,7 +67,7 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                             controller: phone,
                             hintText: "Phone",
                             prefixIcon:  SizedBox(
-                                width: 50, child: Center(child: Text("+966",style: Theme.of(context).textTheme.subtitle1))),
+                                width: 50, child: Center(child: Text("+966",style: Theme.of(context).textTheme.titleMedium))),
                             keyboardType: TextInputType.number,
                             validator: (value) {
                               if (value != null && value.isNotEmpty) {
@@ -141,7 +141,7 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                             }
                           },
                           child: Text("Save",
-                              style: Theme.of(context).textTheme.button),
+                              style: Theme.of(context).textTheme.labelLarge),
                         ),
                       ),
                       const SizedBox(height: SharedValues.padding),
@@ -150,7 +150,7 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                         child: Row(
                           children: [
                             Text("I already have an account",
-                                style: Theme.of(context).textTheme.bodyText2),
+                                style: Theme.of(context).textTheme.bodyMedium),
                             TextButton(
                               onPressed: () async {
                                 Navigator.push(
@@ -160,7 +160,7 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                                             const SignInScreen()));
                               },
                               child: Text("Sign in?",
-                                  style: Theme.of(context).textTheme.headline5),
+                                  style: Theme.of(context).textTheme.headlineSmall),
                             )
                           ],
                         ),

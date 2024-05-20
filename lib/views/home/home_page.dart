@@ -53,7 +53,7 @@ class _HomePageState extends State<HomePage> {
                     value: 1,
                     child: Text(
                       "Sign Out",
-                      style: Theme.of(context).textTheme.headline5,
+                      style: Theme.of(context).textTheme.headlineSmall,
                     ),
                   )
                 ],
@@ -68,7 +68,7 @@ class _HomePageState extends State<HomePage> {
         const SizedBox(height: SharedValues.padding * 2),
         Padding(
             padding: const EdgeInsets.all(SharedValues.padding),
-            child: Text("Home", style: Theme.of(context).textTheme.headline2)),
+            child: Text("Home", style: Theme.of(context).textTheme.displayMedium)),
         Selector<PilgrimsProvider, List<Pilgrim?>>(
           selector: (p0, p1) => p1.adsPilgrims,
           builder: (context, value, _) =>
@@ -110,7 +110,7 @@ class _HomePageState extends State<HomePage> {
                                       child: Text("Missing ad",
                                           style: Theme.of(context)
                                               .textTheme
-                                              .headline1
+                                              .displayLarge
                                               ?.copyWith(
                                                   color: Theme.of(context)
                                                       .colorScheme
@@ -131,7 +131,7 @@ class _HomePageState extends State<HomePage> {
                                             ],
                                             style: Theme.of(context)
                                                 .textTheme
-                                                .headline5),
+                                                .headlineSmall),
                                       ),
                                     ))
                                   ],
@@ -142,7 +142,7 @@ class _HomePageState extends State<HomePage> {
                                   margin: const EdgeInsets.all(
                                       SharedValues.padding),
                                   decoration: BoxDecoration(
-                                    color: Theme.of(context).backgroundColor,
+                                    color: Color(0xFFFFFFFF),
                                     boxShadow: [
                                       BoxShadow(
                                           color: Theme.of(context)
@@ -210,7 +210,7 @@ class _HomePageState extends State<HomePage> {
         Padding(
             padding: const EdgeInsets.all(SharedValues.padding),
             child: Text("The Services",
-                style: Theme.of(context).textTheme.headline2)),
+                style: Theme.of(context).textTheme.displayMedium)),
         Expanded(
             child: ListView(
           scrollDirection: Axis.horizontal,
@@ -274,7 +274,7 @@ class _HomePageState extends State<HomePage> {
                     quarterTurns: -1,
                     child: Text(
                       title,
-                      style: Theme.of(context).textTheme.bodyText1,
+                      style: Theme.of(context).textTheme.bodyLarge,
                     )),
               )),
               Padding(

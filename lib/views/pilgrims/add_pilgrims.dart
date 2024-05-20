@@ -257,7 +257,7 @@ class _AddPilgrimsState extends State<AddPilgrims> {
                     },
                     child: Text(
                       widget.pilgrim == null ? "Create" : "Edit",
-                      style: Theme.of(context).textTheme.button,
+                      style: Theme.of(context).textTheme.labelLarge,
                     ),
                   ),
                 ),

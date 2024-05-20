@@ -82,7 +82,7 @@ class _ViewPilgrimsState extends State<ViewPilgrims> {
                         ],
                         ButtonWidget(
                           child: Text("Search",
-                              style: Theme.of(context).textTheme.button),
+                              style: Theme.of(context).textTheme.labelLarge),
                           onPressed: () async {
                             if (searchType == 1) {
                               provider.searchPilgrims(
@@ -161,15 +161,15 @@ class _ViewPilgrimsState extends State<ViewPilgrims> {
                                               child: Text(pilgrims[index].name,
                                                   style: Theme.of(context)
                                                       .textTheme
-                                                      .headline3))),
+                                                      .displaySmall))),
                                       Expanded(
                                           child: Align(
                                               alignment: AlignmentDirectional
                                                   .centerStart,
                                               child: Text(pilgrims[index].phone,
                                                   style: Theme.of(context)
-                                                      .textTheme
-                                                      .button))),
+                                                      .textTheme.
+                                                      labelLarge))),
                                     ],
                                   )),
                                   PopupMenuButton<String>(
@@ -216,7 +216,7 @@ class _ViewPilgrimsState extends State<ViewPilgrims> {
                                                   item,
                                                   style: Theme.of(context)
                                                       .textTheme
-                                                      .subtitle2,
+                                                      .titleSmall,
                                                 ),
                                               )
                                           ],

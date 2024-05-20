@@ -50,7 +50,7 @@ class DropdownFieldWidget extends StatelessWidget {
                       value: item,
                       child: Text(
                         item.text,
-                        style: Theme.of(context).textTheme.subtitle1,
+                        style: Theme.of(context).textTheme.titleMedium,
                       ))
               ],
               icon:  const SizedBox.shrink(),

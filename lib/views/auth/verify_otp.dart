@@ -69,7 +69,7 @@ class _VerifyOTPState extends State<VerifyOTP> {
                                           ?.phone
                                           .toString() ??
                                       "+966XXXXXXXXX"),
-                          style: Theme.of(context).textTheme.subtitle1?.copyWith(
+                          style: Theme.of(context).textTheme.titleMedium?.copyWith(
                               fontWeight: FontWeight.bold, fontSize: 17),
                           textAlign: TextAlign.center,
                         ),
@@ -133,7 +133,7 @@ class _VerifyOTPState extends State<VerifyOTP> {
                   },
                   child: Text(
                     "Verify",
-                    style: Theme.of(context).textTheme.button,
+                    style: Theme.of(context).textTheme.labelLarge,
                   ),
                 ),
               ),
@@ -142,7 +142,7 @@ class _VerifyOTPState extends State<VerifyOTP> {
                 child: Row(
                   children: [
                     Text("The code has not arrived",
-                        style: Theme.of(context).textTheme.bodyText2),
+                        style: Theme.of(context).textTheme.bodyMedium),
                     TextButton(
                       onPressed: () {
                         Navigator.push(context,
@@ -150,7 +150,7 @@ class _VerifyOTPState extends State<VerifyOTP> {
                                 builder: (context) => widget.isSignUp?const SignUpScreen():const ForgetPassword()));
                       },
                       child: Text("Resend the code?",
-                          style: Theme.of(context).textTheme.headline5),
+                          style: Theme.of(context).textTheme.headlineSmall),
                     )
                   ],
                 ),

@@ -63,7 +63,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       backgroundColor: Theme.of(context).colorScheme.onPrimary,
       body: Column(
         children: [
-          SharedComponents.appBar(title: "Sign up"),
+          SharedComponents.appBar(title: widget.user!=null?"Update profile":"Sign up"),
           Expanded(
               child: Form(
             key: _formKey,
@@ -100,7 +100,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           child: Center(
                               child: Text("+966",
                                   style:
-                                      Theme.of(context).textTheme.subtitle1))),
+                                      Theme.of(context).textTheme.titleMedium))),
                       keyboardType: TextInputType.number,
                       validator: (value) {
                         if (value != null && value.isNotEmpty) {
@@ -230,16 +230,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     },
                     child: Text(
                       widget.user != null?"Edit":"Sign up",
-                      style: Theme.of(context).textTheme.button,
+                      style: Theme.of(context).textTheme.labelLarge,
                     ),
                   ),
                 ),
+                if(widget.user==null)
                 Padding(
                   padding: const EdgeInsets.all(SharedValues.padding),
                   child: Row(
                     children: [
                       Text("I already have an account",
-                          style: Theme.of(context).textTheme.bodyText2),
+                          style: Theme.of(context).textTheme.bodyMedium),
                       TextButton(
                         onPressed: () async {
                           Navigator.push(
@@ -248,7 +249,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   builder: (context) => const SignInScreen()));
                         },
                         child: Text("Sign in?",
-                            style: Theme.of(context).textTheme.headline5),
+                            style: Theme.of(context).textTheme.headlineSmall),
                       )
                     ],
                   ),

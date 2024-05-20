@@ -39,7 +39,7 @@ class AuthScreen extends StatelessWidget {
                           },
                           child: Text(
                             "Sign in",
-                            style: Theme.of(context).textTheme.button,
+                            style: Theme.of(context).textTheme.labelLarge,
                           ),
                         ),
                       ),
@@ -56,7 +56,7 @@ class AuthScreen extends StatelessWidget {
                           },
                           child: Text(
                             "Sign up",
-                            style: Theme.of(context).textTheme.button,
+                            style: Theme.of(context).textTheme.labelLarge,
                           ),
                         ),
                       ),
