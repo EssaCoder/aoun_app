@@ -43,9 +43,6 @@ class AuthApi {
 
   Future<bool> verifyCode(String phone, String smsCode) async {
     try {
-      if(smsCode=="123456"){
-        return true;
-      }
       var twilioResponse =
           await _twilioPhoneVerify.verifySmsCode(phone: phone, code: smsCode);
 
